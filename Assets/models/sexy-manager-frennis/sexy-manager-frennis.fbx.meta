@@ -1,0 +1,1254 @@
+fileFormatVersion: 2
+guid: 5c00c91fb43cbcc45bd5c11a34a96224
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Frenni
+    second: {fileID: 2100000, guid: 5734c4077cc5a2c44aafdb77d0b9ada5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrenniBlush
+    second: {fileID: 2100000, guid: 0b74c8103aaa5ac40b0fb0ff0b97691a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrenniClothes
+    second: {fileID: 2100000, guid: 465218d1ebaad1e4b95800d65f0abdff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrenniGlows
+    second: {fileID: 2100000, guid: f073ead8a9fe0734bbfc2d236917729e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrenniOverlay
+    second: {fileID: 2100000, guid: ac60179c839d8b24f89dbd88d5222eed, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human:
+    - boneName: Root_Frenni_Armature
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thigh.L_Frenni_Armature
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thigh.R_Frenni_Armature
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Calf.L_Frenni_Armature
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Calf.R_Frenni_Armature
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Foot.L_Frenni_Armature
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Foot.R_Frenni_Armature
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Spine_Frenni_Armature
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Neck_Frenni_Armature
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Head_Frenni_Armature
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shoulder.L_Frenni_Armature
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shoulder.R_Frenni_Armature
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Upperarm.L_Frenni_Armature
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Upperarm.R_Frenni_Armature
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Forearm.L_Frenni_Armature
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Forearm.R_Frenni_Armature
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Hand.L_Frenni_Armature
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Hand.R_Frenni_Armature
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe.L_Frenni_Armature
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe.R_Frenni_Armature
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Eye.L_Frenni_Armature
+      humanName: LeftEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Eye.R_Frenni_Armature
+      humanName: RightEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Hair2_Frenni_Armature
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thumb.L_Frenni_Armature
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thumb1.L_Frenni_Armature
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thumb2.L_Frenni_Armature
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pointer.L_Frenni_Armature
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pointer1.L_Frenni_Armature
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pointer2.L_Frenni_Armature
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Middle.L_Frenni_Armature
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Middle1.L_Frenni_Armature
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Middle2.L_Frenni_Armature
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Ring.L_Frenni_Armature
+      humanName: Left Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Ring1.L_Frenni_Armature
+      humanName: Left Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Ring2.L_Frenni_Armature
+      humanName: Left Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pinky.L_Frenni_Armature
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pinky1.L_Frenni_Armature
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pinky2.L_Frenni_Armature
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thumb.R_Frenni_Armature
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thumb1.R_Frenni_Armature
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thumb2.R_Frenni_Armature
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pointer.R_Frenni_Armature
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pointer1.R_Frenni_Armature
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pointer2.R_Frenni_Armature
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Middle.R_Frenni_Armature
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Middle1.R_Frenni_Armature
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Middle2.R_Frenni_Armature
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Ring.R_Frenni_Armature
+      humanName: Right Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Ring1.R_Frenni_Armature
+      humanName: Right Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Ring2.R_Frenni_Armature
+      humanName: Right Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pinky.R_Frenni_Armature
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pinky1.R_Frenni_Armature
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Pinky2.R_Frenni_Armature
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Spine_1_Frenni_Armature
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: frenni-fredina-sexy-manager-frennis(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Frenni Jacket_0
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Frenni Shirt_0
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Frenni_0
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Frenni_1
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Frenni_2
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Frenni_3
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Frenni_4
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Sketchfab_model
+      parentName: frenni-fredina-sexy-manager-frennis(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
+      scale: {x: 100, y: 100.000015, z: 100.000015}
+    - name: Root
+      parentName: Sketchfab_model
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Frenni Armature
+      parentName: Root
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Frenni Armature_rootJoint
+      parentName: Frenni Armature
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0.0000000121016175, z: 0.0000000121016175, w: -0.7071068}
+      scale: {x: 1, y: 0.99999976, z: 0.99999976}
+    - name: Root_Frenni_Armature
+      parentName: Frenni Armature_rootJoint
+      position: {x: 0.000000016270722, y: 0.016703835, z: 0.47535214}
+      rotation: {x: 0.5813732, y: 0.40249875, z: 0.5813731, w: 0.40249872}
+      scale: {x: 1.0000049, y: 1.0000044, z: 1.0000005}
+    - name: Spine_Frenni_Armature
+      parentName: Root_Frenni_Armature
+      position: {x: 0.0000000035762786, y: 0.069138154, z: -1.5459633e-13}
+      rotation: {x: 0.000003874302, y: -0.0000006854534, z: -0.17711794, w: 0.9841897}
+      scale: {x: 1.0000019, y: 0.9999991, z: 1.0000013}
+    - name: Spine_1_Frenni_Armature
+      parentName: Spine_Frenni_Armature
+      position: {x: 0.0000000052154063, y: 0.12974483, z: 4.951062e-13}
+      rotation: {x: -0.0000040818645, y: -0.0000002659219, z: -0.07657962, w: 0.9970635}
+      scale: {x: 1.0000015, y: 0.99999934, z: 1.0000011}
+    - name: Neck_Frenni_Armature
+      parentName: Spine_1_Frenni_Armature
+      position: {x: -0.00000003159046, y: 0.10310726, z: 3.673861e-13}
+      rotation: {x: 0.0000002576762, y: 0.000000032924785, z: 0.12585993, w: 0.992048}
+      scale: {x: 1.0000033, y: 1.0000024, z: 1.000002}
+    - name: Head_Frenni_Armature
+      parentName: Neck_Frenni_Armature
+      position: {x: -0.000000003576278, y: 0.029975794, z: 1.3248069e-12}
+      rotation: {x: -0.040572476, y: 0.7059417, z: 0.040572327, w: 0.70594203}
+      scale: {x: 1.0000002, y: 1.0000039, z: 1.0000048}
+    - name: Eye.R_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: -0.02415479, y: 0.058808327, z: 0.0059642005}
+      rotation: {x: -0.6312975, y: 0.000007897614, z: -0.000006055458, w: 0.77554077}
+      scale: {x: 1.0000054, y: 0.9999954, z: 1.000001}
+    - name: Eye.R_Frenni_Armature_end
+      parentName: Eye.R_Frenni_Armature
+      position: {x: -0, y: 0.063860014, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eye.L_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: 0.024154793, y: 0.05880832, z: 0.0059641874}
+      rotation: {x: -0.6312977, y: -0.0000036358824, z: 0.0000031795346, w: 0.77554065}
+      scale: {x: 1.0000035, y: 0.99999595, z: 1.0000002}
+    - name: Eye.L_Frenni_Armature_end
+      parentName: Eye.L_Frenni_Armature
+      position: {x: -0, y: 0.06386001, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Ear.R_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: -0.07978107, y: 0.14195251, z: 0.0092631085}
+      rotation: {x: 0.3258679, y: -0.8434715, z: -0.22979714, w: -0.35994342}
+      scale: {x: 0.9999995, y: 1.0000046, z: 0.999997}
+    - name: Ear1.R_Frenni_Armature
+      parentName: Ear.R_Frenni_Armature
+      position: {x: -0.000000034570693, y: 0.016898215, z: -0.000000013113022}
+      rotation: {x: 0.02435636, y: -0.4612814, z: -0.07517874, w: 0.8837276}
+      scale: {x: 0.9999835, y: 1.0000029, z: 1.0000182}
+    - name: Ear1.R_Frenni_Armature_end
+      parentName: Ear1.R_Frenni_Armature
+      position: {x: -0, y: 0.016893692, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Ear.L_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: 0.07978107, y: 0.14195243, z: 0.009263042}
+      rotation: {x: -0.32586828, y: -0.843471, z: -0.22979744, w: 0.35994405}
+      scale: {x: 0.99999845, y: 1.000005, z: 0.99999744}
+    - name: Ear1.L_Frenni_Armature
+      parentName: Ear.L_Frenni_Armature
+      position: {x: 0.00000013947486, y: 0.016898116, z: 0.00000007510185}
+      rotation: {x: 0.024357315, y: 0.46127856, z: 0.07517842, w: 0.883729}
+      scale: {x: 0.9999839, y: 1.0000019, z: 1.000017}
+    - name: Ear1.L_Frenni_Armature_end
+      parentName: Ear1.L_Frenni_Armature
+      position: {x: -0, y: 0.016894681, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bang1.R_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: -0.082123175, y: 0.07977053, z: 0.005722823}
+      rotation: {x: -0.95145404, y: -0.067460015, z: 0.28151855, w: 0.104554445}
+      scale: {x: 0.99999994, y: 1.0000093, z: 0.9999955}
+    - name: Bang2.R_Frenni_Armature
+      parentName: Bang1.R_Frenni_Armature
+      position: {x: -0.000000026524066, y: 0.05347809, z: 0.000000009536743}
+      rotation: {x: 0.33115897, y: -0.5967969, z: 0.20479524, w: 0.70158833}
+      scale: {x: 0.9999881, y: 1.0000036, z: 1.0000099}
+    - name: Bang2.R_Frenni_Armature_end
+      parentName: Bang2.R_Frenni_Armature
+      position: {x: -0, y: 0.05348404, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bang1.L_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: 0.082123175, y: 0.079770565, z: 0.0057228683}
+      rotation: {x: -0.9514536, y: 0.06746025, z: -0.28151992, w: 0.104554474}
+      scale: {x: 0.999998, y: 1.0000067, z: 0.9999956}
+    - name: Bang2.L_Frenni_Armature
+      parentName: Bang1.L_Frenni_Armature
+      position: {x: 0.000000010579824, y: 0.053477865, z: 0.000000005960464}
+      rotation: {x: -0.33115947, y: -0.5967953, z: 0.20479451, w: -0.7015897}
+      scale: {x: 0.99998975, y: 1.000006, z: 1.0000122}
+    - name: Bang2.L_Frenni_Armature_end
+      parentName: Bang2.L_Frenni_Armature
+      position: {x: -0, y: 0.053483903, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hair1_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: 0.048585176, y: 0.1205678, z: -0.04005993}
+      rotation: {x: 0.70764244, y: -0.6037915, z: 0.29573134, w: -0.21730413}
+      scale: {x: 0.9999925, y: 1.0000052, z: 1.0000001}
+    - name: Hair1_Frenni_Armature_end
+      parentName: Hair1_Frenni_Armature
+      position: {x: -0, y: 0.06386002, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hair2_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: -0.010389512, y: 0.11770137, z: -0.049087293}
+      rotation: {x: 0.7812982, y: -0.5994251, z: 0.16865794, w: -0.042628672}
+      scale: {x: 1.0000021, y: 0.999998, z: 0.9999957}
+    - name: Hair2_Frenni_Armature_end
+      parentName: Hair2_Frenni_Armature
+      position: {x: -0, y: 0.06386002, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hair3_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: -0.060057286, y: 0.11680686, z: -0.03462508}
+      rotation: {x: 0.82284987, y: -0.54267967, z: -0.01767122, w: 0.16764429}
+      scale: {x: 0.9999937, y: 1.0000006, z: 1.0000072}
+    - name: Hair3_Frenni_Armature_end
+      parentName: Hair3_Frenni_Armature
+      position: {x: -0, y: 0.06386, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Ponytail1_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: 0.027587626, y: 0.11634399, z: 0.10718826}
+      rotation: {x: 0.5797837, y: 0.16852464, z: -0.17725652, w: 0.777194}
+      scale: {x: 1.0000068, y: 1.0000052, z: 0.9999913}
+    - name: Ponytail2_Frenni_Armature
+      parentName: Ponytail1_Frenni_Armature
+      position: {x: 0.000000042915342, y: 0.0929851, z: 0.00000019282102}
+      rotation: {x: 0.0000027362257, y: 0.63610154, z: 0.7716054, w: 0.0000015078112}
+      scale: {x: 0.9999995, y: 1.0000015, z: 0.9999962}
+    - name: Ponytail3_Frenni_Armature
+      parentName: Ponytail2_Frenni_Armature
+      position: {x: 0.0000000047683715, y: 0.09495441, z: 0.000000035762785}
+      rotation: {x: -0.18922545, y: -0.0000009137344, z: -0.00000084274114, w: 0.98193365}
+      scale: {x: 0.9999998, y: 1.000001, z: 1.0000119}
+    - name: Ponytail4_Frenni_Armature
+      parentName: Ponytail3_Frenni_Armature
+      position: {x: -0.00000007152557, y: 0.090474784, z: 0.00000007152557}
+      rotation: {x: -0.61465853, y: -0.0000010645067, z: -0.0000011498267, w: -0.78879344}
+      scale: {x: 1.0000013, y: 1.0000162, z: 0.999989}
+    - name: Ponytail5_Frenni_Armature
+      parentName: Ponytail4_Frenni_Armature
+      position: {x: 0.000000014305114, y: 0.051513176, z: 0.00000008106232}
+      rotation: {x: 0.30536327, y: -0.0000013008639, z: -0.00000022504136, w: 0.95223594}
+      scale: {x: 0.99999964, y: 0.99995726, z: 1.0000416}
+    - name: Ponytail5_Frenni_Armature_end
+      parentName: Ponytail5_Frenni_Armature
+      position: {x: -0, y: 0.0515093, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hat_Frenni_Armature
+      parentName: Head_Frenni_Armature
+      position: {x: -0.018412268, y: 0.19456212, z: 0.07263525}
+      rotation: {x: 0.091058515, y: -0.013254313, z: 0.12371601, w: 0.988042}
+      scale: {x: 1.0000031, y: 1.0000101, z: 0.99999785}
+    - name: Hat_Frenni_Armature_end
+      parentName: Hat_Frenni_Armature
+      position: {x: -0, y: 0.06386005, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tie.R_Frenni_Armature
+      parentName: Neck_Frenni_Armature
+      position: {x: -0.026900694, y: 0.012293554, z: 0.012265997}
+      rotation: {x: 0.634205, y: -0.1582178, z: -0.16927928, w: 0.73762846}
+      scale: {x: 0.9999984, y: 0.9999989, z: 1.000005}
+    - name: Tie.R_Frenni_Armature_end
+      parentName: Tie.R_Frenni_Armature
+      position: {x: -0, y: 0.029976549, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TieBottom.R_Frenni_Armature
+      parentName: Neck_Frenni_Armature
+      position: {x: -0.035889708, y: -0.0012572983, z: 0.0110504925}
+      rotation: {x: 0.91593206, y: -0.37773266, z: 0.006961772, w: 0.13541834}
+      scale: {x: 0.9999965, y: 1.0000043, z: 1.0000081}
+    - name: TieBottom.R_Frenni_Armature_end
+      parentName: TieBottom.R_Frenni_Armature
+      position: {x: -0, y: 0.029976543, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tie.L_Frenni_Armature
+      parentName: Neck_Frenni_Armature
+      position: {x: -0.026900785, y: 0.012293561, z: -0.012266002}
+      rotation: {x: -0.16927993, y: -0.73762876, z: 0.63420534, w: 0.15821467}
+      scale: {x: 0.99999744, y: 0.999999, z: 1.0000052}
+    - name: Tie.L_Frenni_Armature_end
+      parentName: Tie.L_Frenni_Armature
+      position: {x: -0, y: 0.029976547, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TieBottom.L_Frenni_Armature
+      parentName: Neck_Frenni_Armature
+      position: {x: -0.0358897, y: -0.0012573004, z: -0.011050403}
+      rotation: {x: 0.006961787, y: -0.13541776, z: 0.91593206, w: 0.37773275}
+      scale: {x: 1.0000011, y: 1.0000052, z: 1.000006}
+    - name: TieBottom.L_Frenni_Armature_end
+      parentName: TieBottom.L_Frenni_Armature
+      position: {x: -0, y: 0.029976541, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder.R_Frenni_Armature
+      parentName: Spine_1_Frenni_Armature
+      position: {x: -0.0040730247, y: 0.10135648, z: 0.030241992}
+      rotation: {x: -0.8098288, y: 0.02159536, z: 0.057640176, w: -0.58342844}
+      scale: {x: 1.0000048, y: 1.000009, z: 1}
+    - name: Upperarm.R_Frenni_Armature
+      parentName: Shoulder.R_Frenni_Armature
+      position: {x: -0.000000014156103, y: 0.034020044, z: -0.00000004570931}
+      rotation: {x: 0.14206764, y: 0.6030269, z: -0.13290255, w: -0.7736357}
+      scale: {x: 0.9999979, y: 1.000008, z: 1.0000014}
+    - name: Forearm.R_Frenni_Armature
+      parentName: Upperarm.R_Frenni_Armature
+      position: {x: -0.00000040457118, y: 0.1531178, z: 6.1467287e-10}
+      rotation: {x: 0.049556334, y: -0.0016435975, z: 0.0017511317, w: 0.9987685}
+      scale: {x: 0.9999989, y: 1.0000021, z: 1.0000033}
+    - name: Hand.R_Frenni_Armature
+      parentName: Forearm.R_Frenni_Armature
+      position: {x: -0.00000040102748, y: 0.14460725, z: 0.0000000047683715}
+      rotation: {x: 0.015275765, y: 0.7003631, z: 0.0681854, w: -0.71035826}
+      scale: {x: 1.0000002, y: 0.99999005, z: 1.0000001}
+    - name: Thumb.R_Frenni_Armature
+      parentName: Hand.R_Frenni_Armature
+      position: {x: 0.007917993, y: 0.025442978, z: -0.0076958756}
+      rotation: {x: -0.2609037, y: -0.68939453, z: 0.19437197, w: -0.64721245}
+      scale: {x: 0.9999979, y: 1.0000014, z: 1.0000035}
+    - name: Thumb1.R_Frenni_Armature
+      parentName: Thumb.R_Frenni_Armature
+      position: {x: -0.00000022734515, y: 0.013728963, z: -0.0000000015646219}
+      rotation: {x: 0.03775246, y: -0.027888851, z: 0.0011035049, w: 0.9988973}
+      scale: {x: 1.0000026, y: 0.9999968, z: 0.99999744}
+    - name: Thumb2.R_Frenni_Armature
+      parentName: Thumb1.R_Frenni_Armature
+      position: {x: -0.000000084489585, y: 0.014147727, z: -0.0000000166893}
+      rotation: {x: -0.014833468, y: 0.73111844, z: 0.036459286, w: -0.6811142}
+      scale: {x: 0.9999995, y: 1.000009, z: 1.0000085}
+    - name: Thumb2.R_Frenni_Armature_end
+      parentName: Thumb2.R_Frenni_Armature
+      position: {x: -0, y: 0.014144546, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Pointer.R_Frenni_Armature
+      parentName: Hand.R_Frenni_Armature
+      position: {x: 0.009207687, y: 0.049376562, z: 0.00840607}
+      rotation: {x: 0.034095798, y: -0.0057236226, z: 0.040027115, w: 0.99860036}
+      scale: {x: 1.0000066, y: 0.9999996, z: 0.9999968}
+    - name: Pointer1.R_Frenni_Armature
+      parentName: Pointer.R_Frenni_Armature
+      position: {x: 0.0000000017974525, y: 0.01456355, z: -0.00000012075876}
+      rotation: {x: 0.026044097, y: -0.7225278, z: 0.02959469, w: -0.690217}
+      scale: {x: 1.0000015, y: 1.0000026, z: 0.99999326}
+    - name: Pointer2.R_Frenni_Armature
+      parentName: Pointer1.R_Frenni_Armature
+      position: {x: 0.00000011886237, y: 0.015106719, z: 0.000000001117587}
+      rotation: {x: 0.036909815, y: 0.7069465, z: 0.017732894, w: -0.7060808}
+      scale: {x: 1.0000063, y: 1, z: 0.9999952}
+    - name: Pointer2.R_Frenni_Armature_end
+      parentName: Pointer2.R_Frenni_Armature
+      position: {x: -0, y: 0.015108055, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Middle.R_Frenni_Armature
+      parentName: Hand.R_Frenni_Armature
+      position: {x: -0.0015772065, y: 0.048504677, z: 0.010759574}
+      rotation: {x: 0.03518711, y: -0.0054174326, z: 0.044425793, w: 0.99837816}
+      scale: {x: 0.99999195, y: 0.9999988, z: 1.0000061}
+    - name: Middle1.R_Frenni_Armature
+      parentName: Middle.R_Frenni_Armature
+      position: {x: -0, y: 0.020941641, z: -0.00000006675254}
+      rotation: {x: 0.025579244, y: -0.7241056, z: 0.028942239, w: -0.6886068}
+      scale: {x: 1.0000103, y: 0.9999976, z: 1.000005}
+    - name: Middle2.R_Frenni_Armature
+      parentName: Middle1.R_Frenni_Armature
+      position: {x: 0.000000049360096, y: 0.018566048, z: 0.0000000011920929}
+      rotation: {x: 0.03680654, y: 0.70664287, z: 0.017927302, w: -0.70638496}
+      scale: {x: 0.99999994, y: 1.0000106, z: 1.0000014}
+    - name: Middle2.R_Frenni_Armature_end
+      parentName: Middle2.R_Frenni_Armature
+      position: {x: -0, y: 0.018564863, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Ring.R_Frenni_Armature
+      parentName: Hand.R_Frenni_Armature
+      position: {x: -0.0127447955, y: 0.048018456, z: 0.009086349}
+      rotation: {x: 0.034441486, y: -0.0048176325, z: 0.038706876, w: 0.99864525}
+      scale: {x: 0.99999887, y: 0.99999744, z: 0.99999475}
+    - name: Ring1.R_Frenni_Armature
+      parentName: Ring.R_Frenni_Armature
+      position: {x: 0.000000002980232, y: 0.018285394, z: -0.00000015140976}
+      rotation: {x: 0.026150567, y: -0.7223343, z: 0.028170373, w: -0.6904749}
+      scale: {x: 0.9999928, y: 1.0000039, z: 1.0000007}
+    - name: Ring2.R_Frenni_Armature
+      parentName: Ring1.R_Frenni_Armature
+      position: {x: -0.00000008113682, y: 0.015683664, z: 0.0000000011920929}
+      rotation: {x: 0.037192408, y: 0.7058697, z: 0.017075064, w: -0.7071585}
+      scale: {x: 1.000006, y: 1.0000057, z: 1.0000005}
+    - name: Ring2.R_Frenni_Armature_end
+      parentName: Ring2.R_Frenni_Armature
+      position: {x: -0, y: 0.01568582, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Pinky.R_Frenni_Armature
+      parentName: Hand.R_Frenni_Armature
+      position: {x: -0.022940988, y: 0.045265082, z: 0.0058388435}
+      rotation: {x: 0.03575761, y: -0.0035970185, z: 0.042689353, w: 0.9984418}
+      scale: {x: 0.99999845, y: 1.0000002, z: 0.9999966}
+    - name: Pinky1.R_Frenni_Armature
+      parentName: Pinky.R_Frenni_Armature
+      position: {x: 0.0000000017881393, y: 0.014774003, z: 0.00000007435912}
+      rotation: {x: 0.02082622, y: -0.7220324, z: 0.032262567, w: -0.6907927}
+      scale: {x: 1.0000064, y: 1.0000043, z: 0.99999744}
+    - name: Pinky2.R_Frenni_Armature
+      parentName: Pinky1.R_Frenni_Armature
+      position: {x: 0.00000012084841, y: 0.01263978, z: 0.000000009164214}
+      rotation: {x: 0.033579383, y: 0.7064885, z: 0.023369683, w: -0.7065411}
+      scale: {x: 1.0000046, y: 1.0000011, z: 1.0000048}
+    - name: Pinky2.R_Frenni_Armature_end
+      parentName: Pinky2.R_Frenni_Armature
+      position: {x: -0, y: 0.012641762, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Breast.R_Frenni_Armature
+      parentName: Spine_1_Frenni_Armature
+      position: {x: -0.030470314, y: 0.047309596, z: 0.029568002}
+      rotation: {x: 0.11848388, y: 0.1121898, z: 0.9054073, w: 0.39193437}
+      scale: {x: 0.99999815, y: 1.000003, z: 1.0000066}
+    - name: Breast1.R_Frenni_Armature
+      parentName: Breast.R_Frenni_Armature
+      position: {x: 0.00000007808208, y: 0.048561867, z: 0.000000007152557}
+      rotation: {x: 0.13551605, y: 0.6539113, z: -0.06386993, w: 0.74159026}
+      scale: {x: 1.0000054, y: 0.9999991, z: 1.0000123}
+    - name: Breast2.R_Frenni_Armature
+      parentName: Breast1.R_Frenni_Armature
+      position: {x: 0.0000000080466265, y: 0.032549188, z: -0.000000005960464}
+      rotation: {x: -0.00039729467, y: -0.018136349, z: -0.012828079, w: 0.9997532}
+      scale: {x: 0.9999979, y: 0.9999991, z: 0.99999714}
+    - name: Breast2.R_Frenni_Armature_end
+      parentName: Breast2.R_Frenni_Armature
+      position: {x: -0, y: 0.032548565, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder.L_Frenni_Armature
+      parentName: Spine_1_Frenni_Armature
+      position: {x: -0.0040730317, y: 0.10135639, z: -0.030241996}
+      rotation: {x: -0.057639662, y: -0.58343166, z: 0.8098264, w: 0.021596022}
+      scale: {x: 1.0000048, y: 1.0000087, z: 1.0000007}
+    - name: Upperarm.L_Frenni_Armature
+      parentName: Shoulder.L_Frenni_Armature
+      position: {x: -0.000000026375055, y: 0.03402001, z: 0.00000016972422}
+      rotation: {x: -0.14206482, y: 0.6030272, z: -0.13290092, w: 0.7736363}
+      scale: {x: 1.0000014, y: 1.0000017, z: 1.0000019}
+    - name: Forearm.L_Frenni_Armature
+      parentName: Upperarm.L_Frenni_Armature
+      position: {x: 0.00000024489125, y: 0.15311767, z: 0.0000000036880372}
+      rotation: {x: 0.049555536, y: 0.0016434189, z: -0.0017504687, w: 0.99876857}
+      scale: {x: 0.9999982, y: 1.0000015, z: 1.0000033}
+    - name: Hand.L_Frenni_Armature
+      parentName: Forearm.L_Frenni_Armature
+      position: {x: 0.00000029643064, y: 0.14460723, z: 0.000000005364418}
+      rotation: {x: -0.0152753275, y: 0.700363, z: 0.06818525, w: 0.7103584}
+      scale: {x: 1.0000024, y: 0.9999917, z: 1.0000001}
+    - name: Thumb.L_Frenni_Armature
+      parentName: Hand.L_Frenni_Armature
+      position: {x: -0.007917994, y: 0.025443008, z: -0.0076959273}
+      rotation: {x: 0.26090646, y: -0.68939215, z: 0.19437096, w: 0.6472142}
+      scale: {x: 1.0000018, y: 0.9999968, z: 1.0000075}
+    - name: Thumb1.L_Frenni_Armature
+      parentName: Thumb.L_Frenni_Armature
+      position: {x: 0.00000007747672, y: 0.01372897, z: -0.000000019855797}
+      rotation: {x: 0.037754364, y: 0.02788531, z: -0.001107171, w: 0.9988973}
+      scale: {x: 1.0000062, y: 0.99999845, z: 0.9999993}
+    - name: Thumb2.L_Frenni_Armature
+      parentName: Thumb1.L_Frenni_Armature
+      position: {x: -0.00000010050833, y: 0.014147837, z: -0.000000029802322}
+      rotation: {x: 0.014829714, y: 0.73112553, z: 0.03645731, w: 0.68110675}
+      scale: {x: 1.0000073, y: 0.99999344, z: 1.0000105}
+    - name: Thumb2.L_Frenni_Armature_end
+      parentName: Thumb2.L_Frenni_Armature
+      position: {x: -0, y: 0.014150058, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Pointer.L_Frenni_Armature
+      parentName: Hand.L_Frenni_Armature
+      position: {x: -0.009207687, y: 0.04937662, z: 0.008406047}
+      rotation: {x: -0.03409548, y: -0.0057219835, z: 0.040028792, w: -0.99860024}
+      scale: {x: 1.0000043, y: 1.0000012, z: 0.9999991}
+    - name: Pointer1.L_Frenni_Armature
+      parentName: Pointer.L_Frenni_Armature
+      position: {x: -0.0000000014528632, y: 0.014563614, z: -0.00000017935999}
+      rotation: {x: 0.026048474, y: 0.7225233, z: -0.029601842, w: -0.6902213}
+      scale: {x: 1.0000082, y: 1.0000037, z: 0.9999954}
+    - name: Pointer2.L_Frenni_Armature
+      parentName: Pointer1.L_Frenni_Armature
+      position: {x: -0.00000009346986, y: 0.015106876, z: -6.705522e-10}
+      rotation: {x: 0.036909457, y: -0.7069423, z: -0.017728928, w: -0.7060851}
+      scale: {x: 1.0000044, y: 0.9999974, z: 1.000001}
+    - name: Pointer2.L_Frenni_Armature_end
+      parentName: Pointer2.L_Frenni_Armature
+      position: {x: -0, y: 0.01510179, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Middle.L_Frenni_Armature
+      parentName: Hand.L_Frenni_Armature
+      position: {x: 0.0015772119, y: 0.048504613, z: 0.010759542}
+      rotation: {x: -0.03518181, y: -0.005417523, z: 0.04442647, w: -0.9983783}
+      scale: {x: 0.999991, y: 1.0000012, z: 1.0000066}
+    - name: Middle1.L_Frenni_Armature
+      parentName: Middle.L_Frenni_Armature
+      position: {x: -0.000000005066395, y: 0.020941531, z: 0.00000012798468}
+      rotation: {x: 0.025580382, y: 0.7241089, z: -0.028947853, w: -0.6886029}
+      scale: {x: 1.0000137, y: 0.99999577, z: 0.99999523}
+    - name: Middle2.L_Frenni_Armature
+      parentName: Middle1.L_Frenni_Armature
+      position: {x: 0.00000016599893, y: 0.018565962, z: -0.000000005960464}
+      rotation: {x: 0.036801256, y: -0.70665103, z: -0.017926924, w: -0.70637715}
+      scale: {x: 1.000003, y: 0.99999446, z: 1.0000097}
+    - name: Middle2.L_Frenni_Armature_end
+      parentName: Middle2.L_Frenni_Armature
+      position: {x: -0, y: 0.018569792, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Ring.L_Frenni_Armature
+      parentName: Hand.L_Frenni_Armature
+      position: {x: 0.012744798, y: 0.04801839, z: 0.009086317}
+      rotation: {x: -0.0344406, y: -0.004823712, z: 0.03870718, w: -0.99864525}
+      scale: {x: 0.9999974, y: 0.9999998, z: 0.9999983}
+    - name: Ring1.L_Frenni_Armature
+      parentName: Ring.L_Frenni_Armature
+      position: {x: -0.0000000011920929, y: 0.018285358, z: -0.000000025642802}
+      rotation: {x: 0.026142087, y: 0.72233933, z: -0.028164584, w: -0.6904704}
+      scale: {x: 1.0000019, y: 0.9999988, z: 0.9999951}
+    - name: Ring2.L_Frenni_Armature
+      parentName: Ring1.L_Frenni_Armature
+      position: {x: -0.000000048056243, y: 0.015683739, z: 5.9604643e-10}
+      rotation: {x: 0.037199993, y: -0.7058662, z: -0.017074589, w: -0.70716166}
+      scale: {x: 1.0000082, y: 1.0000013, z: 1.0000008}
+    - name: Ring2.L_Frenni_Armature_end
+      parentName: Ring2.L_Frenni_Armature
+      position: {x: -0, y: 0.015687944, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Pinky.L_Frenni_Armature
+      parentName: Hand.L_Frenni_Armature
+      position: {x: 0.022940995, y: 0.045265127, z: 0.0058389734}
+      rotation: {x: -0.035766035, y: -0.003602087, z: 0.042687062, w: -0.99844164}
+      scale: {x: 0.9999911, y: 1.0000037, z: 1.0000067}
+    - name: Pinky1.L_Frenni_Armature
+      parentName: Pinky.L_Frenni_Armature
+      position: {x: 0.000000004172325, y: 0.014774094, z: -0.000000028139912}
+      rotation: {x: 0.020842886, y: 0.7220451, z: -0.0322826, w: -0.69077796}
+      scale: {x: 1.0000046, y: 1.0000011, z: 1.0000019}
+    - name: Pinky2.L_Frenni_Armature
+      parentName: Pinky1.L_Frenni_Armature
+      position: {x: 0.000000032633544, y: 0.012639552, z: -0.0000000035762786}
+      rotation: {x: -0.03357604, y: 0.7064911, z: 0.0233703, w: 0.7065386}
+      scale: {x: 1.0000074, y: 1.0000002, z: 0.9999966}
+    - name: Pinky2.L_Frenni_Armature_end
+      parentName: Pinky2.L_Frenni_Armature
+      position: {x: -0, y: 0.012642571, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Breast.L_Frenni_Armature
+      parentName: Spine_1_Frenni_Armature
+      position: {x: -0.030470308, y: 0.047309592, z: -0.029568093}
+      rotation: {x: 0.9054074, y: -0.39193445, z: 0.11848357, w: -0.11218998}
+      scale: {x: 0.9999982, y: 1.0000025, z: 1.0000063}
+    - name: Breast1.L_Frenni_Armature
+      parentName: Breast.L_Frenni_Armature
+      position: {x: 0.000000094175334, y: 0.048562102, z: 0.0000000047683715}
+      rotation: {x: -0.135519, y: 0.6539145, z: -0.06387156, w: -0.7415867}
+      scale: {x: 0.99999774, y: 0.99999684, z: 1.0000074}
+    - name: Breast2.L_Frenni_Armature
+      parentName: Breast1.L_Frenni_Armature
+      position: {x: -0.0000000077486035, y: 0.03254916, z: -0.00000015914439}
+      rotation: {x: -0.00040087095, y: 0.0181407, z: 0.012828735, w: 0.9997531}
+      scale: {x: 0.9999982, y: 1.0000064, z: 1.0000005}
+    - name: Breast2.L_Frenni_Armature_end
+      parentName: Breast2.L_Frenni_Armature
+      position: {x: -0, y: 0.03254754, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tag_Frenni_Armature
+      parentName: Breast1.L_Frenni_Armature
+      position: {x: 0.0007314917, y: 0.047138613, z: 0.046691846}
+      rotation: {x: -0.31218556, y: 0.009751556, z: 0.0110166045, w: 0.9499072}
+      scale: {x: 1.0000064, y: 0.9999933, z: 1.0000072}
+    - name: Tag_Frenni_Armature_end
+      parentName: Tag_Frenni_Armature
+      position: {x: -0, y: 0.032547556, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Collar.R_Frenni_Armature
+      parentName: Spine_1_Frenni_Armature
+      position: {x: -0.043481935, y: 0.105065264, z: 0.043142997}
+      rotation: {x: 0.480336, y: -0.21859124, z: 0.6989454, w: 0.48267013}
+      scale: {x: 0.9999977, y: 1.0000055, z: 1.0000081}
+    - name: Collar.R_Frenni_Armature_end
+      parentName: Collar.R_Frenni_Armature
+      position: {x: -0, y: 0.06356406, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Collar.L_Frenni_Armature
+      parentName: Spine_1_Frenni_Armature
+      position: {x: -0.04348193, y: 0.10506526, z: -0.043142986}
+      rotation: {x: 0.698945, y: -0.4826701, z: 0.4803365, w: 0.21859156}
+      scale: {x: 0.99999857, y: 1.0000036, z: 1.0000082}
+    - name: Collar.L_Frenni_Armature_end
+      parentName: Collar.L_Frenni_Armature
+      position: {x: -0, y: 0.06356406, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh.R_Frenni_Armature
+      parentName: Root_Frenni_Armature
+      position: {x: 0.0031697133, y: 0.012518403, z: 0.06863129}
+      rotation: {x: -0.011860371, y: -0.038284525, z: 0.9693092, w: 0.24255578}
+      scale: {x: 0.9999947, y: 0.99999887, z: 1.0000061}
+    - name: Calf.R_Frenni_Armature
+      parentName: Thigh.R_Frenni_Armature
+      position: {x: -0.0000000046752393, y: 0.17617027, z: 0.000000005317852}
+      rotation: {x: 0.10735302, y: -0.9941963, z: -0.006973208, w: -0.00074072974}
+      scale: {x: 1.0000036, y: 1.0000004, z: 0.9999999}
+    - name: Foot.R_Frenni_Armature
+      parentName: Calf.R_Frenni_Armature
+      position: {x: 0.000000008717179, y: 0.26974902, z: 0.00000003268942}
+      rotation: {x: -0.31278566, y: 0.65076536, z: 0.2685725, w: 0.63760364}
+      scale: {x: 0.99999624, y: 0.99999464, z: 1.0000107}
+    - name: Toe.R_Frenni_Armature
+      parentName: Foot.R_Frenni_Armature
+      position: {x: 0.000000007754861, y: 0.057368185, z: -0.0000000020302833}
+      rotation: {x: -0.40766537, y: 0.0019259749, z: -0.0059500923, w: 0.91311}
+      scale: {x: 0.9999985, y: 0.9999923, z: 1.0000097}
+    - name: Toe.R_Frenni_Armature_end
+      parentName: Toe.R_Frenni_Armature
+      position: {x: -0, y: 0.05736857, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ThighJig.R_Frenni_Armature
+      parentName: Thigh.R_Frenni_Armature
+      position: {x: -0.0076897102, y: 0.086203516, z: 0.006882099}
+      rotation: {x: -0.11135854, y: -0.1633442, z: -0.6457006, w: 0.7375559}
+      scale: {x: 1.0000048, y: 0.9999993, z: 1.0000063}
+    - name: ThighJig.R_Frenni_Armature_end
+      parentName: ThighJig.R_Frenni_Armature
+      position: {x: -0, y: 0.08681595, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Butt.R_Frenni_Armature
+      parentName: Root_Frenni_Armature
+      position: {x: 0.016010413, y: 0.03970887, z: 0.061407585}
+      rotation: {x: -0.000000059604638, y: -0.000000029802319, z: -0.8140389, w: 0.58081037}
+      scale: {x: 0.99999785, y: 0.9999982, z: 1.0000017}
+    - name: Butt.R_Frenni_Armature_end
+      parentName: Butt.R_Frenni_Armature
+      position: {x: -0, y: 0.06914044, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tail_Frenni_Armature
+      parentName: Root_Frenni_Armature
+      position: {x: 0.067160375, y: 0.08244579, z: -0.00000011386588}
+      rotation: {x: -0.00000017881393, y: -0.000000059604645, z: -0.6446912, w: 0.76444316}
+      scale: {x: 1.0000021, y: 1.0000021, z: 1.0000008}
+    - name: Tail1_Frenni_Armature
+      parentName: Tail_Frenni_Armature
+      position: {x: 0.000000050067882, y: 0.029277796, z: -4.0756732e-13}
+      rotation: {x: 0.15099196, y: -0.6907976, z: 0.15099193, w: 0.6907978}
+      scale: {x: 1.0000011, y: 1.0000048, z: 1.0000052}
+    - name: Tail1_Frenni_Armature_end
+      parentName: Tail1_Frenni_Armature
+      position: {x: -0, y: 0.029277341, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh.L_Frenni_Armature
+      parentName: Root_Frenni_Armature
+      position: {x: 0.0031696197, y: 0.012518474, z: -0.068631284}
+      rotation: {x: -0.9693098, y: 0.24255325, z: 0.0118604, w: -0.03828588}
+      scale: {x: 0.99999905, y: 1.0000079, z: 1.0000055}
+    - name: Calf.L_Frenni_Armature
+      parentName: Thigh.L_Frenni_Armature
+      position: {x: 0.000000031031668, y: 0.17617041, z: 0.00000003259629}
+      rotation: {x: -0.10735048, y: -0.9941965, z: -0.0069764527, w: 0.00074051076}
+      scale: {x: 1.000002, y: 0.999995, z: 0.999997}
+    - name: Foot.L_Frenni_Armature
+      parentName: Calf.L_Frenni_Armature
+      position: {x: 0.000000008642673, y: 0.2697492, z: 0.000000047460198}
+      rotation: {x: -0.3127841, y: -0.650765, z: -0.26857382, w: 0.63760436}
+      scale: {x: 0.99999505, y: 0.9999879, z: 1.000017}
+    - name: Toe.L_Frenni_Armature
+      parentName: Foot.L_Frenni_Armature
+      position: {x: 4.2738973e-10, y: 0.057368077, z: 0.000000008214265}
+      rotation: {x: -0.40766597, y: -0.0019149773, z: 0.005947826, w: 0.9131097}
+      scale: {x: 0.9999973, y: 0.9999977, z: 0.9999996}
+    - name: Toe.L_Frenni_Armature_end
+      parentName: Toe.L_Frenni_Armature
+      position: {x: -0, y: 0.05736808, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ThighJig.L_Frenni_Armature
+      parentName: Thigh.L_Frenni_Armature
+      position: {x: 0.0076897196, y: 0.086203545, z: 0.006882119}
+      rotation: {x: 0.11114693, y: -0.16310094, z: -0.64573926, w: -0.7376078}
+      scale: {x: 1.000007, y: 0.99999934, z: 1.0000015}
+    - name: ThighJig.L_Frenni_Armature_end
+      parentName: ThighJig.L_Frenni_Armature
+      position: {x: -0, y: 0.08681751, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Butt.L_Frenni_Armature
+      parentName: Root_Frenni_Armature
+      position: {x: 0.016010292, y: 0.039708856, z: -0.061407592}
+      rotation: {x: -0.81403893, y: -0.58081037, z: 0.000000029802319, w: 0}
+      scale: {x: 0.9999978, y: 0.99999815, z: 1.0000006}
+    - name: Butt.L_Frenni_Armature_end
+      parentName: Butt.L_Frenni_Armature
+      position: {x: -0, y: 0.06914045, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

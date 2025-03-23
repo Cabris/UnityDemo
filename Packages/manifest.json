@@ -1,7 +1,8 @@
 {
   "dependencies": {
-	"com.naelstrof.jigglephysics": "https://github.com/naelstrof/UnityJigglePhysics.git#upm",
+    "com.naelstrof.jigglephysics": "https://github.com/naelstrof/UnityJigglePhysics.git#upm",
     "com.unity.ai.navigation": "2.0.5",
+    "com.unity.animation.rigging": "1.3.0",
     "com.unity.burst": "1.8.18",
     "com.unity.cinemachine": "2.10.3",
     "com.unity.collab-proxy": "2.6.0",
