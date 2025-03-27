@@ -89,9 +89,9 @@ namespace UnityDemo
 
         // player
         private float _speed;
-        private float _aniParamSpeed;
-        private float _aniParamDirection;
-        private float _targetRotation = 0.0f;
+        private float _aniParamForwadSpeed;
+        private float _aniParamSideSpeed;
+        private float _moveRotation = 0.0f;
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
@@ -101,12 +101,11 @@ namespace UnityDemo
         private float _fallTimeoutDelta;
 
         // animation IDs
-        private int _animIDSpeed;
-        private int _animIDDirection;
+        private int _animIDForwardSpeed;
+        private int _animIDSideSpeed;
         private int _animIDGrounded;
         private int _animIDJump;
         private int _animIDFreeFall;
-        private int _animIDMotionSpeed;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -181,12 +180,11 @@ namespace UnityDemo
 
         private void AssignAnimationIDs()
         {
-            _animIDSpeed = Animator.StringToHash("Speed");
-            _animIDDirection = Animator.StringToHash("Direction");
+            _animIDForwardSpeed = Animator.StringToHash("ForwardSpeed");
+            _animIDSideSpeed = Animator.StringToHash("SideSpeed");
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
-            _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
 
         private void GroundedCheck()
@@ -264,10 +262,11 @@ namespace UnityDemo
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
             float speedChangeRate = Time.deltaTime * SpeedChangeRate;
 
+            //animation///////////////
             if (_RotateByDirection)
             {
                 if (targetSpeed == 0)
-                    _aniParamSpeed = Mathf.Lerp(_aniParamSpeed, targetSpeed, speedChangeRate);
+                    _aniParamForwadSpeed = Mathf.Lerp(_aniParamForwadSpeed, targetSpeed, speedChangeRate);
                 else
                 {
                     float maxSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
@@ -276,9 +275,9 @@ namespace UnityDemo
                     {
                         newAniParamSpeed = Mathf.Clamp(newAniParamSpeed, -0.7f, 0.7f);
                     }
-                    _aniParamSpeed = Mathf.Lerp(_aniParamSpeed, newAniParamSpeed, speedChangeRate);
+                    _aniParamForwadSpeed = Mathf.Lerp(_aniParamForwadSpeed, newAniParamSpeed, speedChangeRate);
                 }
-                _aniParamDirection = Mathf.Lerp(_aniParamDirection, 0, speedChangeRate);
+                _aniParamSideSpeed = Mathf.Lerp(_aniParamSideSpeed, 0, speedChangeRate);
             }
             else
             {
@@ -289,25 +288,29 @@ namespace UnityDemo
                     newAniParamSpeed = Mathf.Clamp(newAniParamSpeed, -0.7f, 0.7f);
                     newAniParamDirection = Mathf.Clamp(newAniParamDirection, -0.7f, 0.7f);
                 }
-                _aniParamSpeed = Mathf.Lerp(_aniParamSpeed, newAniParamSpeed, speedChangeRate);
-                _aniParamDirection = Mathf.Lerp(_aniParamDirection, newAniParamDirection, speedChangeRate);
+                _aniParamForwadSpeed = Mathf.Lerp(_aniParamForwadSpeed, newAniParamSpeed, speedChangeRate);
+                _aniParamSideSpeed = Mathf.Lerp(_aniParamSideSpeed, newAniParamDirection, speedChangeRate);
             }
+            
+            if (Mathf.Abs(_aniParamForwadSpeed) < 0.01f)
+                _aniParamForwadSpeed = 0f;
+            if (Mathf.Abs(_aniParamSideSpeed) < 0.01f)
+                _aniParamSideSpeed = 0f;
+            //////////////////////////
+        
 
-            if (Mathf.Abs(_aniParamSpeed) < 0.01f)
-                _aniParamSpeed = 0f;
-            if (Mathf.Abs(_aniParamDirection) < 0.01f)
-                _aniParamDirection = 0f;
+
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
             if (_input.move != Vector2.zero)
             {
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                _moveRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                 _mainCamera.transform.eulerAngles.y;
 
                 if (_RotateByDirection)
                 {
-                    float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation,
+                    float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _moveRotation,
                     ref _rotationVelocity, RotationSmoothTime);
                     // rotate to face input direction relative to camera position
                     transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
@@ -322,7 +325,7 @@ namespace UnityDemo
             }
            
             //world space
-            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            Vector3 targetDirection = Quaternion.Euler(0.0f, _moveRotation, 0.0f) * Vector3.forward;
 
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
@@ -331,20 +334,8 @@ namespace UnityDemo
             // update animator if using character
             if (HasAnimator)
             {
-                _animator.SetFloat(_animIDSpeed, _aniParamSpeed);
-                _animator.SetFloat(_animIDDirection, _aniParamDirection);
-                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-
-                if (_aniParamSpeed == 0 && _aniParamDirection == 0 && Grounded)//idle
-                {
-                    //_animator.applyRootMotion = true;
-                }
-                else
-                {
-                    //_animator.applyRootMotion = false;
-                    //_animator.transform.localRotation = Quaternion.identity;
-                    //_animator.transform.localPosition = Vector3.zero;
-                }
+                _animator.SetFloat(_animIDForwardSpeed, _aniParamForwadSpeed);
+                _animator.SetFloat(_animIDSideSpeed, _aniParamSideSpeed);
             }
         }
 
@@ -438,6 +429,7 @@ namespace UnityDemo
                 GroundedRadius);
         }
 
+        //trigger from animation, play footstep sound
         public void OnFootstep(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
@@ -450,6 +442,7 @@ namespace UnityDemo
             }
         }
 
+        //trigger from animation, play land sound
         public void OnLand(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)

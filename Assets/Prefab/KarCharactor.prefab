@@ -166,7 +166,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 11
-  m_Radius: 1
+  m_Radius: 2
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 3921014817942480701}
-  _RotateByDirection: 1
+  _RotateByDirection: 0
   MoveSpeed: 5
   SprintSpeed: 15
   RotationSmoothTime: 0.12
@@ -281,9 +281,10 @@ MonoBehaviour:
   move: {x: 0, y: 0}
   look: {x: 0, y: 0}
   jump: 0
+  attack: 0
   sprint: 0
   analogMovement: 0
-  cursorLocked: 1
+  cursorLocked: 0
   cursorInputForLook: 1
 --- !u!1 &4778485518858553889
 GameObject:
@@ -620,6 +621,38 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[2]'
+      value: 10.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[3]'
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[4]'
+      value: 22.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[5]'
+      value: 34.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[6]'
+      value: 14.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[8]'
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[10]'
+      value: 18.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868716418057165105, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[11]'
+      value: 57.9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -654,9 +687,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5144656825761393658, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2034345830435039804}
-    - targetCorrespondingSourceObject: {fileID: 5144656825761393658, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1261220461650352499}
     - targetCorrespondingSourceObject: {fileID: 5125052179866351642, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2843269772649180499}
@@ -788,15 +818,13 @@ MonoBehaviour:
     jiggleSettings: {fileID: 11400000, guid: c42d0650cb76b7e44b4e7a89f3e0ab0b, type: 2}
     ignoredTransforms:
     - {fileID: 1789773105210134920}
-    colliders:
-    - {fileID: 0}
+    colliders: []
     animated: 1
   - rootTransform: {fileID: 4878825469094849871}
     jiggleSettings: {fileID: 11400000, guid: c42d0650cb76b7e44b4e7a89f3e0ab0b, type: 2}
     ignoredTransforms:
     - {fileID: 1824198724973923256}
-    colliders:
-    - {fileID: 0}
+    colliders: []
     animated: 1
   wind: {x: 0, y: 0, z: 0}
   debugDraw: 0
@@ -847,8 +875,7 @@ MonoBehaviour:
     jiggleSettings: {fileID: 11400000, guid: 6365f75340f5ea54ead760fc56e9a651, type: 2}
     ignoredTransforms:
     - {fileID: 4936072058080760038}
-    colliders:
-    - {fileID: 0}
+    colliders: []
     animated: 1
   - rootTransform: {fileID: 7452542789970476051}
     jiggleSettings: {fileID: 11400000, guid: f503705d4a3fc8d4db0003795c7774ce, type: 2}
@@ -870,48 +897,6 @@ MonoBehaviour:
     animated: 1
   wind: {x: 0, y: 0, z: 0}
   debugDraw: 1
---- !u!114 &1261220461650352499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2334506977566814550}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d76f24409a39604ca3986f91ce6d28a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jiggleUpdateMode: 0
-  <blend>k__BackingField: 1
-  jiggleRigs:
-  - rootTransform: {fileID: 270525879200405907}
-    jiggleSettings: {fileID: 11400000, guid: 6365f75340f5ea54ead760fc56e9a651, type: 2}
-    ignoredTransforms:
-    - {fileID: 4936072058080760038}
-    colliders:
-    - {fileID: 0}
-    animated: 1
-  - rootTransform: {fileID: 7452542789970476051}
-    jiggleSettings: {fileID: 11400000, guid: f503705d4a3fc8d4db0003795c7774ce, type: 2}
-    ignoredTransforms:
-    - {fileID: 6649546874007373514}
-    colliders:
-    - {fileID: 2730262868961027579}
-    - {fileID: 1819240119397315945}
-    - {fileID: 5688044862669504395}
-    animated: 1
-  - rootTransform: {fileID: 7726959861346080848}
-    jiggleSettings: {fileID: 11400000, guid: f503705d4a3fc8d4db0003795c7774ce, type: 2}
-    ignoredTransforms:
-    - {fileID: 9134506502281538595}
-    colliders:
-    - {fileID: 3678496465066283665}
-    - {fileID: 5527390763284052134}
-    - {fileID: 5915533881068946009}
-    animated: 1
-  wind: {x: 0, y: 0, z: 0}
-  debugDraw: 0
 --- !u!4 &3524791309304601395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2888433953721712225, guid: cd9cc76f6dac7ca40aed3379deb4180e, type: 3}
