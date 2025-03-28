@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 3921014817942480701}
-  _RotateByDirection: 0
+  _RotateByDirection: 1
   MoveSpeed: 5
   SprintSpeed: 15
   RotationSmoothTime: 0.12
