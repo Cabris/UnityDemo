@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - CinemachineTarget
+  - target
+  - ground
+  - wall
   layers:
   - Default
   - TransparentFX
