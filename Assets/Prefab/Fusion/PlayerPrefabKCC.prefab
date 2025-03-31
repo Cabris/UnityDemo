@@ -408,7 +408,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 3ea0513b7ad144046ba4d925f24d694c, type: 2}
+      objectReference: {fileID: 9100000, guid: 9b8de521078d52d478e9a6f6d0e10caf, type: 2}
     - target: {fileID: 5866666021909216657, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
@@ -541,6 +541,8 @@ MonoBehaviour:
     lookDelta: {x: 0, y: 0}
     lookRotationEuler: {x: 0, y: 0, z: 0}
     analogMovement:
+      _value: 0
+    rotateTowardMovement:
       _value: 0
 --- !u!54 &5255450627804694661
 Rigidbody:
