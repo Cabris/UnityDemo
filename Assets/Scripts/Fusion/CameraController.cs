@@ -24,6 +24,9 @@ namespace UnityDemo
         private float _yaw, _pitch;
         //private GameObject _mainCamera;
 
+        public delegate void OnLookRotationEulerChanged(Vector3 lookRotationEuler);
+        public OnLookRotationEulerChanged onLookRotationEulerChanged;
+
         private void Awake()
         {
             if (_cameraTarget == null)
@@ -53,7 +56,7 @@ namespace UnityDemo
             _virtualCamera.Follow = _cameraTarget;
         }
 
-        public void UpdateCameraRotation(Vector2 lookInput, bool isMouseControl, float deltaTime, out Vector3 lookRotationEuler)
+        public void UpdateCameraRotation(Vector2 lookInput, bool isMouseControl, float deltaTime)
         {
             if (lookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
@@ -68,7 +71,7 @@ namespace UnityDemo
 
             if (_cameraTarget != null)
                 _cameraTarget.rotation = rotation;
-            lookRotationEuler = rotation.eulerAngles;
+            onLookRotationEulerChanged?.Invoke(rotation.eulerAngles);
         }
 
     }

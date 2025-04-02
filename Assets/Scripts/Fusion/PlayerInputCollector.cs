@@ -34,6 +34,12 @@ namespace UnityDemo
             _cachedInputData.moveDelta = value.Get<Vector2>();
         }
 
+        public void OnStrafe(InputValue value)
+        {
+            _cachedInputData.buttons.Set(PlayerInputButtons.Strafe, value.isPressed);
+        }
+
+
         public void OnLook(InputValue value)
         {
             if (cursorInputForLook)

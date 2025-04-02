@@ -1,67 +1,136 @@
+using Fusion.Addons.SimpleKCC;
+using System;
 using UnityEngine;
-
-public class AnimationController : MonoBehaviour
+namespace UnityDemo
 {
-    [SerializeField]
-    private Animator _animator;
-
-    private int _animIDForwardSpeed;
-    private int _animIDSidewardSpeed;
-    private int _animIDGrounded;
-    private int _animIDJump;
-    private int _animIDFreeFall;
-
-    private void Awake()
+    public class AnimationController : MonoBehaviour
     {
-        _animIDForwardSpeed = Animator.StringToHash("ForwardSpeed");
-        _animIDSidewardSpeed = Animator.StringToHash("SideSpeed");
-        _animIDGrounded = Animator.StringToHash("Grounded");
-        _animIDJump = Animator.StringToHash("Jump");
-        _animIDFreeFall = Animator.StringToHash("FreeFall");
-
-        if (_animator == null && !TryGetComponent<Animator>(out _animator))
+        [SerializeField]
+        private Animator _animator;
+        private PlayerControllerProperties properties;
+        private int _animIDForwardSpeed;
+        private int _animIDLateralSpeed;
+        private int _animIDIsGrounded;
+        private int _animIDVerticalSpeed;
+        private int _animIDTurningSpeed;
+        private int _animIDIsEquipWeapon;
+        private int _animIDIsStrafe;
+        private bool isInitialized = false;
+        private readonly float sprintThreshold = 2f / 3f;
+        public struct AnimationParams
         {
-            Debug.LogError("Animator component not found on " + gameObject.name);
+            public Vector3 LocalVelocity;
+            public float TurningSpeed;
+            public bool IsGrounded;
+            public bool IsStrafe;
+            public bool IsSprint;
         }
-    }
 
-
-    /// <param name="animMoveVelocity">
-    /// walk/run dicrection: use x for side, y for forward, walk<=>run threshold is 0.7
-    /// </param>
-    /// <param name="motionSpeedMultiply">
-    /// walk/run animation speed multiply for analog input
-    /// </param>
-    public void UpdateMovementAnimation(Vector3 animMoveVelocity, float motionSpeedMultiply)
-    {
-        if (_animator != null)
+        public void Initialize(PlayerControllerProperties properties)
         {
-            _animator.SetFloat(_animIDForwardSpeed, animMoveVelocity.y);
-            _animator.SetFloat(_animIDSidewardSpeed, animMoveVelocity.x);
+            this.properties = properties;
+            if (this.properties != null && _animator != null)
+                isInitialized = true;
         }
-    }
 
-    public void SetGrounded(bool isGrounded)
-    {
-        if (_animator != null)
+        private void Awake()
         {
-            _animator.SetBool(_animIDGrounded, isGrounded);
+            _animIDForwardSpeed = Animator.StringToHash("ForwardSpeed");
+            _animIDLateralSpeed = Animator.StringToHash("LateralSpeed");
+            _animIDIsGrounded = Animator.StringToHash("IsGrounded");
+            _animIDVerticalSpeed = Animator.StringToHash("VerticalSpeed");
+            _animIDTurningSpeed = Animator.StringToHash("TurningSpeed");
+            _animIDIsEquipWeapon = Animator.StringToHash("IsEquipWeapon");
+            _animIDIsStrafe = Animator.StringToHash("IsStrafe");
+
+            if (_animator == null && !TryGetComponent<Animator>(out _animator))
+            {
+                Debug.LogError("Animator component not found on " + gameObject.name);
+            }
         }
-    }
 
-    public void SetIsJump(bool isJump)
-    {
-        if (_animator != null)
+
+        private void SetForwardSpeed(float forwardSpeed)
         {
-            _animator.SetBool(_animIDJump, isJump);
+            if (isInitialized)
+            {
+                ;
+                _animator.SetFloat(_animIDForwardSpeed, forwardSpeed);
+            }
         }
-    }
 
-    public void SetFalling(bool isFalling)
-    {
-        if (_animator != null)
+        private void SetLateralSpeed(float lateralSpeed)
         {
-            _animator.SetBool(_animIDFreeFall, isFalling);
+            if (isInitialized)
+            {
+                _animator.SetFloat(_animIDLateralSpeed, lateralSpeed);
+            }
+        }
+        private void SetVerticalSpeed(float verticalSpeed)
+        {
+            if (isInitialized)
+            {
+                _animator.SetFloat(_animIDVerticalSpeed, verticalSpeed);
+            }
+        }
+
+        private void SetIsGrounded(bool isGrounded)
+        {
+            if (isInitialized)
+            {
+                _animator.SetBool(_animIDIsGrounded, isGrounded);
+            }
+        }
+
+        private void SetTurningSpeed(float turningSpeed)
+        {
+            if (isInitialized)
+            {
+                _animator.SetFloat(_animIDTurningSpeed, turningSpeed);
+            }
+        }
+
+        public void SetIsEquipWeapon(bool isEquipWeapon)
+        {
+            if (isInitialized)
+            {
+                _animator.SetBool(_animIDIsEquipWeapon, isEquipWeapon);
+            }
+        }
+
+        private void SetIsStrafe(bool isStrafe)
+        {
+            if (isInitialized)
+            {
+                _animator.SetBool(_animIDIsStrafe, isStrafe);
+            }
+        }
+
+        internal void SetAnimationParams(in AnimationParams @params)
+        {
+            if (!isInitialized)
+                return;
+
+            SetIsGrounded(@params.IsGrounded);
+            SetIsStrafe(@params.IsStrafe);
+            Vector3 localVelocityNor = Vector3.zero;
+
+            if (@params.IsSprint)
+            {
+                localVelocityNor = @params.LocalVelocity / properties.SprintSpeed;//[0,1]
+            }
+            else//max speed is RunSpeed
+            {
+                localVelocityNor = @params.LocalVelocity * sprintThreshold / properties.RunSpeed;//[0,sprintThreshold]
+            }
+
+            SetForwardSpeed(localVelocityNor.z);
+            SetLateralSpeed(localVelocityNor.x);
+            float localVerticalSpeedNor = localVelocityNor.y;
+            SetVerticalSpeed(localVerticalSpeedNor);
+            SetTurningSpeed(@params.TurningSpeed);
+
+            //Debug.Log($"@params.LocalVelocity: {@params.LocalVelocity},  properties.RunSpeed: {properties.RunSpeed}, localVelocityNor: {localVelocityNor}");
         }
     }
 }

@@ -625,18 +625,26 @@ MonoBehaviour:
   _animationController: {fileID: 3762547960021569205}
   _audioController: {fileID: 8045308077243105946}
   _playerInputCollector: {fileID: 3992268172649894895}
-  WalkSpeed: 0.75
-  SprintSpeed: 5
-  JumpImpulse: 8
-  UpGravity: -25
-  DownGravity: -40
-  FallingSpeedThreshold: -10
-  GroundAcceleration: 55
-  GroundDeceleration: 25
-  AirAcceleration: 25
-  AirDeceleration: 1.3
-  RotationSmoothTime: 0.05
-  _isRotateTowardMovement: 1
+  properties:
+    WalkSpeed: 2
+    RunSpeed: 5
+    SprintSpeed: 8
+    JumpImpulse: 8
+    UpGravity: -25
+    DownGravity: -40
+    VerticalSpeedThreshold: 10
+    GroundAcceleration: 20
+    GroundDeceleration: 25
+    AirAcceleration: 25
+    AirDeceleration: 1.3
+    RotationSmoothTime: 0.05
+    turnSpeedMultiply: 50
+  _playNameText: {fileID: 2643457551014229730}
+  KCC_VelocityLocal: {x: 0, y: 0, z: 0}
+  KCC_speed: 0
+  isStrafe: 0
+  isSprint: 0
+  turningSpeed: 0
 --- !u!114 &8287729925514410195
 MonoBehaviour:
   m_ObjectHideFlags: 0

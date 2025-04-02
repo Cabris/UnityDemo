@@ -3,6 +3,9 @@ using UnityEngine;
 using Fusion.Addons.SimpleKCC;
 using System;
 using UnityEngine.UIElements;
+using NUnit.Framework.Internal;
+using Unity.VisualScripting;
+using static UnityDemo.AnimationController;
 
 namespace UnityDemo
 {
@@ -16,62 +19,36 @@ namespace UnityDemo
         public AudioController _audioController;
         public PlayerInputCollector _playerInputCollector;
 
-        [Header("Movement Setup")]
-        public float WalkSpeed = 2f;
-        public float SprintSpeed = 5f;
-        public float JumpImpulse = 10f;
-        public float UpGravity = -25f;
-        public float DownGravity = -40f;
-        public float FallingSpeedThreshold = -10;
-
-        [Header("Movement Accelerations")]
-        public float GroundAcceleration = 55f;
-        public float GroundDeceleration = 25f;
-        public float AirAcceleration = 25f;
-        public float AirDeceleration = 1.3f;
-
-        [Header("Movement Rotation")]
-        [Tooltip("How fast the character turns to face movement direction")]
-        [Range(0.0f, 0.3f)]
-        public float RotationSmoothTime = 0.12f;
-
         [SerializeField]
-        bool _isRotateTowardMovement = true;
+        private PlayerControllerProperties properties = new PlayerControllerProperties();
 
-        [Networked] private bool NT_isRotateTowardMovement { get; set; }
+        private PlayerControllerStatus status = new PlayerControllerStatus();
 
-        /// <param name="_moveVelocity">
-        /// velocity in world space to apply to KCC
-        /// </param>
-        [Networked] private Vector3 NT_moveVelocity { get; set; }
+        public PlayerControllerStatus Status { get => status; }
 
-        /// <param name="_motionSpeedMultiply">
-        /// motion speed multiply for animation and movement
-        /// </param>
-        [Networked] private float NT_motionSpeedMultiply { get; set; }
-
-        /// <param name="_aniVelocity">
-        /// motion velocity multiply for animation
-        /// </param>
-        [Networked] private Vector2 NT_aniVelocity { get; set; }
-
-        /// <param name="_lookRotation">
-        /// look rotation in world space 
-        /// </param>
-        [Networked] private Vector3 NT_lookRotationEuler { get; set; }
-
-        private float jumpImpulse { get; set; }
-
-        /// <param name="_isJumping">
-        /// is this player currently jumping
-        /// </param>
-        [Networked] private NetworkBool NT_aniIsJumping { get; set; }
-
-        [Networked] private NetworkButtons NT_previousButtons { get; set; }
-
+        private float jumpImpulse;
         private float _yawRotationSpeed = 0f;
         private float _pitchRotationSpeed = 0f;
         private Vector3 SpawnedPosition = default;
+        public TMPro.TextMeshProUGUI _playNameText;
+
+        private void Awake()
+        {
+            status.onPlayerNameChanged += OnPlayerNameChanged;
+        }
+
+        private void Start()
+        {
+            _animationController.Initialize(properties);
+            _cameraController.onLookRotationEulerChanged += OnLookRotationEulerChanged;
+        }
+
+        private void OnLookRotationEulerChanged(Vector3 lookRotationEuler)
+        {
+            //apply to network input
+            _playerInputCollector.CachedInputData.lookRotationEuler = lookRotationEuler;
+            _playerInputCollector.CachedInputData.rotateTowardMovement = false;
+        }
 
         public override void Spawned()
         {
@@ -82,9 +59,18 @@ namespace UnityDemo
             if (HasStateAuthority)//proxy in host
             {
                 SpawnedPosition = KCC.Position;
-
-                NT_lookRotationEuler = KCC.GetLookRotation();
+                InitializePlayerStatus();
             }
+            OnPlayerNameChanged();
+        }
+
+        private void InitializePlayerStatus()
+        {
+            status.NT_lookRotationEuler = KCC.GetLookRotation();
+            status.NT_isStrafe = false;
+            status.NT_isSprint = false;
+            status.NT_playerName = "Default_" + Runner.LocalPlayer.PlayerId.ToString();
+            status.NT_turningSpeed = 0;
         }
 
         public override void FixedUpdateNetwork()
@@ -92,138 +78,143 @@ namespace UnityDemo
             if (GetInput(out NetworkInputData data))
             {
                 NetworkButtons buttons = data.buttons;
-                ProcessInput(data, NT_previousButtons, Runner.DeltaTime);
-                NT_previousButtons = buttons;
-            }
-            // It feels better when the player falls quicker
-            KCC.SetGravity(KCC.RealVelocity.y >= 0f ? UpGravity : DownGravity);
-            KCC.SetLookRotation(NT_lookRotationEuler);
-            KCC.Move(NT_moveVelocity, jumpImpulse);
+                if (HasStateAuthority)
+                {   //only handle movement input if this player has state authority
+                    //(the host who control this player or player proxies on host that receive input from client)
+                    HandleMovementInput(data, status.NT_previousButtons, Runner.DeltaTime);
+                }
+                //jump need to be handled in both host and client, because it is depend on KCC.IsGrounded,
+                //which is not networked so it is not sync between host and client
+                HandleJumpInput(data.buttons, status.NT_previousButtons);
 
-            if (KCC.IsGrounded)
-            {
-                // Stop jumping
-                NT_aniIsJumping = false;
+
+                status.NT_previousButtons = buttons;
             }
+
+            // It feels better when the player falls quicker
+            KCC.SetGravity(KCC.RealVelocity.y >= 0f ? properties.UpGravity : properties.DownGravity);
+            KCC.SetLookRotation(status.NT_lookRotationEuler);
+            KCC.Move(status.NT_moveVelocity, jumpImpulse);
 
             //reset position if player fall off the map
             if (HasStateAuthority && KCC.Transform.position.y < -100)
                 KCC.SetPosition(SpawnedPosition);
 
-            if (NT_isRotateTowardMovement != _isRotateTowardMovement)
-            {
-                if (HasStateAuthority)
-                {
-                    NT_isRotateTowardMovement = _isRotateTowardMovement;
-                }
-                else if (!HasInputAuthority)
-                {
-                    _isRotateTowardMovement = NT_isRotateTowardMovement;
-                }
-            }
-
         }
 
-        private void ProcessInput(in NetworkInputData input,
+        //use input to set Networked properties
+        private void HandleMovementInput(in NetworkInputData input,
         in NetworkButtons previousButtons, float deltaTime)
         {
             NetworkButtons currentButtons = input.buttons;
+            float acceleration = KCC.IsGrounded ? properties.GroundAcceleration : properties.AirAcceleration;
+            float deceleration = KCC.IsGrounded ? properties.GroundDeceleration : properties.AirDeceleration;
+
             // normalise input direction
             Vector2 inputDirection = new Vector2(input.moveDelta.x, input.moveDelta.y).normalized;
+            Vector3 lookRotationEuler = input.lookRotationEuler;
+
+            //sprint
+            status.NT_isSprint = currentButtons.IsSet(PlayerInputButtons.Sprint);
+
+            //strafe
+            if (currentButtons.WasPressed(previousButtons, PlayerInputButtons.Strafe))
+            {
+                status.NT_isStrafe = !status.NT_isStrafe;
+            }
 
             // Update movement speed
-            float targetSpeed = currentButtons.IsSet(PlayerInputButtons.Sprint) ? SprintSpeed : WalkSpeed;
-            float acceleration = KCC.IsGrounded ? GroundAcceleration : AirAcceleration;
+            float targetSpeed = status.NT_isSprint ? properties.SprintSpeed : properties.WalkSpeed;
+            status.NT_motionSpeedMultiply = input.analogMovement ? input.moveDelta.magnitude : 1f;
 
-            if (inputDirection == Vector2.zero)
-                targetSpeed = 0.0f;
-
-            Vector3 currentVelocity = KCC.RealVelocity;
-
-            //players current horizontal velocity
-            float currentHorizontalSpeed = new Vector3(
-                currentVelocity.x, 0.0f,
-                currentVelocity.z).magnitude;
-
-            float speedOffset = 0.1f;
-            NT_motionSpeedMultiply = input.analogMovement ? input.moveDelta.magnitude : 1f;
-
-            Vector3 newInputLookRotationEuler = input.lookRotationEuler;
-
-            //multiplies the input direction by the look rotation _yaw
-            //to give us the horizontal direction we need to move in world space
-            Vector3 lookRotationnEulerHorizontal = new Vector3(0f, newInputLookRotationEuler.y, 0f);
-            Vector3 targetMoveDirectionHorizontal =
-                Quaternion.Euler(lookRotationnEulerHorizontal) * new Vector3(inputDirection.x, 0f, inputDirection.y);
-            //Debug.DrawRay(transform.position, targetMoveDirectionHorizontal, Color.green);
-
-            // accelerate or decelerate to target speed
-            if (Mathf.Abs(targetSpeed - currentHorizontalSpeed) > speedOffset)
-            {
-                // creates curved result rather than a linear one giving a more organic speed change
-                NT_moveVelocity = Vector3.Lerp(currentVelocity, targetMoveDirectionHorizontal * targetSpeed * NT_motionSpeedMultiply, deltaTime * acceleration);
-            }
-            else
-            {
-                NT_moveVelocity = targetMoveDirectionHorizontal * targetSpeed * NT_motionSpeedMultiply;
-            }
-
-            Vector2 targetAniVelocity = Vector2.zero;
-
+            float turningSpeed = 0;
+            //Rotate player based on input
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
             if (input.moveDelta != Vector2.zero)//moving
             {
-                Vector3 targetLookRotationEuler = default;
-                Vector3 lookRotationnEuler = new Vector3(newInputLookRotationEuler.x, newInputLookRotationEuler.y, newInputLookRotationEuler.z);
-
-                if (NT_isRotateTowardMovement)//player will rotate toward the direction it is moving
-                {
-                    float angleYaw = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg;
-                    targetLookRotationEuler = lookRotationnEuler += new Vector3(0, angleYaw, 0);
-
-                    //alway play forward animation
-                    targetAniVelocity.Set(0, Mathf.Abs(inputDirection.magnitude));
-                }
-                else//player will rotate toward the direction the camera is facing
-                {
-                    targetLookRotationEuler = lookRotationnEuler;
-                    //play animation based on input direction
-                    targetAniVelocity.Set(inputDirection.x, inputDirection.y);
-                }
-
+                Vector3 lookRotationnEuler = Vector3.zero;
                 Vector3 currentLookRotationEuler = KCC.GetLookRotation();
 
-                float newYaw = Mathf.SmoothDampAngle(currentLookRotationEuler.y, targetLookRotationEuler.y,
-                    ref _yawRotationSpeed, RotationSmoothTime, Mathf.Infinity, deltaTime);
-                float newPitch = Mathf.SmoothDampAngle(currentLookRotationEuler.x, targetLookRotationEuler.x,
-                    ref _pitchRotationSpeed, RotationSmoothTime, Mathf.Infinity, deltaTime);
-
-                Vector3 newLookRotationEuler = new Vector3(newPitch, newYaw, 0f);
-                if (NT_lookRotationEuler != newLookRotationEuler)
-                    NT_lookRotationEuler = new Vector3(newPitch, newYaw, 0f);
-
-                if (!currentButtons.IsSet(PlayerInputButtons.Sprint))
+                if (status.NT_isStrafe)
                 {
-                    float clampValue = 0.7f;
-                    targetAniVelocity.x = Mathf.Clamp(targetAniVelocity.x, -clampValue, clampValue);
-                    targetAniVelocity.y = Mathf.Clamp(targetAniVelocity.y, -clampValue, clampValue);
+                    lookRotationnEuler = new Vector3(lookRotationEuler.x, lookRotationEuler.y, lookRotationEuler.z);
                 }
+                else//rotate to camera+input direction
+                {
+                    lookRotationnEuler = new Vector3(
+                        lookRotationEuler.x,
+                        lookRotationEuler.y + Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg,
+                        lookRotationEuler.z);
+                }
+
+                float newYaw = Mathf.SmoothDampAngle(currentLookRotationEuler.y, lookRotationnEuler.y,
+                    ref _yawRotationSpeed, properties.RotationSmoothTime, Mathf.Infinity, deltaTime);
+                float newPitch = Mathf.SmoothDampAngle(currentLookRotationEuler.x, lookRotationnEuler.x,
+                    ref _pitchRotationSpeed, properties.RotationSmoothTime, Mathf.Infinity, deltaTime);
+
+                Vector3 rotationEuler = new Vector3(newPitch, newYaw, 0f);
+                if (status.NT_lookRotationEuler != rotationEuler)
+                {
+                    //calculate turningSpeed in range[-1,1] by status.NT_lookRotationEuler and rotationEuler
+                    Vector3 newLookDirection = Quaternion.Euler(rotationEuler) * Vector3.forward;
+                    Vector3 oldLookDirection = Quaternion.Euler(status.NT_lookRotationEuler) * Vector3.forward;
+
+                    float angleDifference = Vector3.SignedAngle(oldLookDirection, newLookDirection, Vector3.up);
+                    turningSpeed = Mathf.Clamp(angleDifference * properties.turnSpeedMultiply / 180f, -1f, 1f);
+
+                    status.NT_lookRotationEuler = rotationEuler;
+                    status.NT_turningSpeed = turningSpeed;
+                }
+                status.NT_turningSpeed = turningSpeed;
+            }
+            else
+            {
+                status.NT_turningSpeed = Mathf.Lerp(status.NT_turningSpeed, turningSpeed, 0.5f);
             }
 
-            float aniVelocityOffset = 0.0001f;
-            if ((targetAniVelocity - NT_aniVelocity).sqrMagnitude > aniVelocityOffset)
-                //smooth animation velocity
-                NT_aniVelocity = Vector2.Lerp(NT_aniVelocity, targetAniVelocity, deltaTime * 10);
-            else
-                NT_aniVelocity = targetAniVelocity;
+            //Move
+            Vector3 currentVelocity = KCC.RealVelocity;
+            float currentHorizontalSpeed = new Vector3(currentVelocity.x, 0.0f, currentVelocity.z).magnitude;
 
+            //multiplies the input direction by the look rotation _yaw
+            //to give us the horizontal direction we need to move in world space
+            Vector3 lookRotationnEulerHorizontal = new Vector3(0f, lookRotationEuler.y + Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg, 0f);
+            Vector3 moveDirection = Vector3.zero;
+            moveDirection = Quaternion.Euler(lookRotationnEulerHorizontal) * Vector3.forward;
+
+            Debug.DrawRay(transform.position, moveDirection, Color.green);
+            Debug.DrawRay(transform.position, currentVelocity.normalized, Color.red);
+
+            float speedOffset = 0.1f;
+            // accelerate or decelerate to target speed
+            if (Mathf.Abs(targetSpeed - currentHorizontalSpeed) > speedOffset)
+            {
+                // creates curved result rather than a linear one giving a more organic speed change
+                status.NT_moveVelocity = Vector3.Lerp(currentVelocity,
+                    moveDirection * targetSpeed, deltaTime * acceleration);
+            }
+            else
+            {
+                status.NT_moveVelocity = moveDirection * targetSpeed;
+            }
+
+            if (inputDirection == Vector2.zero)
+            {
+                targetSpeed = 0;
+                status.NT_moveVelocity = Vector3.Lerp(currentVelocity,
+                    moveDirection * targetSpeed, deltaTime * deceleration);
+            }
+
+        }
+
+        private void HandleJumpInput(in NetworkButtons currentButtons, in NetworkButtons previousButtons)
+        {
             jumpImpulse = 0f;
             //only on pressed 
             if (KCC.IsGrounded && currentButtons.WasPressed(previousButtons, PlayerInputButtons.Jump))
             {
-                jumpImpulse = JumpImpulse;
-                NT_aniIsJumping = true;
+                jumpImpulse = properties.JumpImpulse;
             }
         }
 
@@ -236,22 +227,44 @@ namespace UnityDemo
                 _cameraController.UpdateCameraRotation(
                     _playerInputCollector.LocalInputs.lookDelta,
                     _playerInputCollector.IsCurrentDeviceMouse,
-                    Time.deltaTime, out Vector3 lookRotationEuler);
-                //apply to network input
-                _playerInputCollector.CachedInputData.lookRotationEuler = lookRotationEuler;
-                _playerInputCollector.CachedInputData.rotateTowardMovement = _isRotateTowardMovement;
+                    Time.deltaTime);
             }
         }
 
+        [SerializeField]
+        Vector3 KCC_VelocityLocal;
+
+        [SerializeField]
+        float KCC_speed;
+
+        [SerializeField]
+        bool isStrafe;
+
+        [SerializeField]
+        bool isSprint;
+
+        [SerializeField]
+        float turningSpeed;
+
         public override void Render()
         {
-            _animationController.UpdateMovementAnimation(NT_aniVelocity, NT_motionSpeedMultiply);
-            _animationController.SetGrounded(KCC.IsGrounded);
-            _animationController.SetIsJump(NT_aniIsJumping);
-            _animationController.SetFalling(KCC.RealVelocity.y < FallingSpeedThreshold);
+            Vector3 velocityLocal = KCC.Transform.InverseTransformDirection(KCC.RealVelocity);
 
-            Span<int> numbers = stackalloc int[3];
-            int[] a = new int[3];
+            AnimationParams @params = new AnimationParams()
+            {
+                LocalVelocity = velocityLocal,
+                IsGrounded = KCC.IsGrounded,
+                IsStrafe = status.NT_isStrafe,
+                TurningSpeed = status.NT_turningSpeed,
+                IsSprint = status.NT_isSprint,
+            };
+            _animationController.SetAnimationParams(in @params);
+
+            KCC_VelocityLocal = @params.LocalVelocity;
+            isStrafe = @params.IsStrafe;
+            turningSpeed = @params.TurningSpeed;
+            KCC_speed = KCC_VelocityLocal.magnitude;
+            isSprint = @params.IsSprint;
         }
 
         public void OnFootstep(AnimationEvent animationEvent)
@@ -264,5 +277,42 @@ namespace UnityDemo
         {
             _audioController.PlayLanding(animationEvent, transform.position);
         }
+        private void OnPlayerNameChanged()
+        {
+            if (_playNameText != null)
+                _playNameText.text = status.NT_playerName;
+        }
+
+        private void OnDestroy()
+        {
+            _cameraController.onLookRotationEulerChanged -= OnLookRotationEulerChanged;
+            status.onPlayerNameChanged -= OnPlayerNameChanged;
+        }
     }
+
+    [Serializable]
+    public class PlayerControllerProperties
+    {
+        [Header("Movement Setup")]
+        public float WalkSpeed = 2f;
+        public float RunSpeed = 5f;
+        public float SprintSpeed = 5f;
+        public float JumpImpulse = 10f;
+        public float UpGravity = -25f;
+        public float DownGravity = -40f;
+        public float VerticalSpeedThreshold = 10;
+
+        [Header("Movement Accelerations")]
+        public float GroundAcceleration = 55f;
+        public float GroundDeceleration = 25f;
+        public float AirAcceleration = 25f;
+        public float AirDeceleration = 1.3f;
+
+        [Header("Movement Rotation")]
+        [Tooltip("How fast the character turns to face movement direction")]
+        [Range(0.0f, 0.3f)]
+        public float RotationSmoothTime = 0.12f;
+        public float turnSpeedMultiply = 50f;
+    }
+
 }

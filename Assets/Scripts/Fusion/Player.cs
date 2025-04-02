@@ -55,7 +55,7 @@ namespace UnityDemo
                 }
                 else
                     SetupCameraControl();
-                PlayerName = "Default_" + Runner.LocalPlayer.PlayerId.ToString();
+                //PlayerName = "Default_" + Runner.LocalPlayer.PlayerId.ToString();
             }
             else
             {

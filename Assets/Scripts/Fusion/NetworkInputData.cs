@@ -9,6 +9,7 @@ namespace UnityDemo
         Jump=0,//¸õÅDÁä
         Attack=1,  // ¶}¤õ
         Sprint=2,  // ½Ä¨ë
+        Strafe=3,  // °¼²¾
     }
 
     [Serializable]
