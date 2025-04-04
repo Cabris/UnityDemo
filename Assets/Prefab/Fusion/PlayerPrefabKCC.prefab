@@ -552,7 +552,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5923158686464093050}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -629,22 +629,17 @@ MonoBehaviour:
     WalkSpeed: 2
     RunSpeed: 5
     SprintSpeed: 8
-    JumpImpulse: 8
+    JumpImpulse: 280
     UpGravity: -25
-    DownGravity: -40
+    DownGravity: -27
     VerticalSpeedThreshold: 10
     GroundAcceleration: 20
     GroundDeceleration: 25
     AirAcceleration: 25
     AirDeceleration: 1.3
-    RotationSmoothTime: 0.05
+    RotationSmoothTime: 0.219
     turnSpeedMultiply: 50
   _playNameText: {fileID: 2643457551014229730}
-  KCC_VelocityLocal: {x: 0, y: 0, z: 0}
-  KCC_speed: 0
-  isStrafe: 0
-  isSprint: 0
-  turningSpeed: 0
 --- !u!114 &8287729925514410195
 MonoBehaviour:
   m_ObjectHideFlags: 0

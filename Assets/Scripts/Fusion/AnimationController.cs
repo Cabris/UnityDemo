@@ -14,6 +14,7 @@ namespace UnityDemo
         private int _animIDVerticalSpeed;
         private int _animIDTurningSpeed;
         private int _animIDIsEquipWeapon;
+        private int _animIDIsJump;
         private int _animIDIsStrafe;
         private bool isInitialized = false;
         private readonly float sprintThreshold = 2f / 3f;
@@ -24,6 +25,7 @@ namespace UnityDemo
             public bool IsGrounded;
             public bool IsStrafe;
             public bool IsSprint;
+            public bool IsJump;
         }
 
         public void Initialize(PlayerControllerProperties properties)
@@ -42,6 +44,7 @@ namespace UnityDemo
             _animIDTurningSpeed = Animator.StringToHash("TurningSpeed");
             _animIDIsEquipWeapon = Animator.StringToHash("IsEquipWeapon");
             _animIDIsStrafe = Animator.StringToHash("IsStrafe");
+            _animIDIsJump = Animator.StringToHash("IsJump");
 
             if (_animator == null && !TryGetComponent<Animator>(out _animator))
             {
@@ -106,31 +109,64 @@ namespace UnityDemo
             }
         }
 
+        internal void SetIsJump(bool isJump)
+        {
+            if (!isInitialized)
+                return;
+            _animator.SetBool(_animIDIsJump, isJump);
+        }
+
         internal void SetAnimationParams(in AnimationParams @params)
         {
             if (!isInitialized)
                 return;
 
-            SetIsGrounded(@params.IsGrounded);
-            SetIsStrafe(@params.IsStrafe);
             Vector3 localVelocityNor = Vector3.zero;
-
+            Vector3 scale = new Vector3(1, 1, 1);
             if (@params.IsSprint)
             {
-                localVelocityNor = @params.LocalVelocity / properties.SprintSpeed;//[0,1]
+                scale.x = scale.z = 1f / properties.SprintSpeed;//[0,1]
             }
             else//max speed is RunSpeed
             {
-                localVelocityNor = @params.LocalVelocity * sprintThreshold / properties.RunSpeed;//[0,sprintThreshold]
+                scale.x = scale.z = sprintThreshold / properties.RunSpeed;//[0,sprintThreshold]
             }
+            localVelocityNor = Vector3.Scale(@params.LocalVelocity, scale);
+            localVelocityNor.y = NormalizeVelocity(@params.LocalVelocity.y, properties.VerticalimpulseVelocity,
+            properties.UpGravity, properties.DownGravity);
+
+            const float zeroThreshold = 0.05f;
+            if (Mathf.Abs(localVelocityNor.x) < zeroThreshold)
+                localVelocityNor.x = 0;
+            if (Mathf.Abs(localVelocityNor.y) < zeroThreshold)
+                localVelocityNor.y = 0;
+            if (Mathf.Abs(localVelocityNor.z) < zeroThreshold)
+                localVelocityNor.z = 0;
 
             SetForwardSpeed(localVelocityNor.z);
             SetLateralSpeed(localVelocityNor.x);
-            float localVerticalSpeedNor = localVelocityNor.y;
-            SetVerticalSpeed(localVerticalSpeedNor);
+            SetVerticalSpeed(localVelocityNor.y);
             SetTurningSpeed(@params.TurningSpeed);
+            SetIsJump(@params.IsJump);
+            SetIsGrounded(@params.IsGrounded);
+            SetIsStrafe(@params.IsStrafe);
 
             //Debug.Log($"@params.LocalVelocity: {@params.LocalVelocity},  properties.RunSpeed: {properties.RunSpeed}, localVelocityNor: {localVelocityNor}");
+        }
+
+        public float NormalizeVelocity(float v, float impulseVelocity, float gravityUp, float gravityDown)
+        {
+            // 計算初始速度
+            float vMax = impulseVelocity;
+
+            // 計算最高點位移
+            float s = (vMax * vMax) / (2 * Mathf.Abs(gravityUp));
+
+            // 計算下落時的最大速度
+            float vMin = Mathf.Sqrt(2 * Mathf.Abs(gravityDown) * s);
+
+            // 標準化公式
+            return 2f * ((v - (-vMin)) / (vMax - (-vMin))) - 1f;
         }
     }
 }

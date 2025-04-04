@@ -25,7 +25,6 @@ namespace UnityDemo
         private PlayerControllerStatus status = new PlayerControllerStatus();
 
         public PlayerControllerStatus Status { get => status; }
-
         private float jumpImpulse;
         private float _yawRotationSpeed = 0f;
         private float _pitchRotationSpeed = 0f;
@@ -86,8 +85,6 @@ namespace UnityDemo
                 //jump need to be handled in both host and client, because it is depend on KCC.IsGrounded,
                 //which is not networked so it is not sync between host and client
                 HandleJumpInput(data.buttons, status.NT_previousButtons);
-
-
                 status.NT_previousButtons = buttons;
             }
 
@@ -95,11 +92,14 @@ namespace UnityDemo
             KCC.SetGravity(KCC.RealVelocity.y >= 0f ? properties.UpGravity : properties.DownGravity);
             KCC.SetLookRotation(status.NT_lookRotationEuler);
             KCC.Move(status.NT_moveVelocity, jumpImpulse);
-
             //reset position if player fall off the map
             if (HasStateAuthority && KCC.Transform.position.y < -100)
                 KCC.SetPosition(SpawnedPosition);
 
+            if (status.IsJump && KCC.IsGrounded)
+            {
+                status.IsJump = false;
+            }
         }
 
         //use input to set Networked properties
@@ -187,34 +187,37 @@ namespace UnityDemo
             Debug.DrawRay(transform.position, currentVelocity.normalized, Color.red);
 
             float speedOffset = 0.1f;
+            Vector3 tempVelocity = currentVelocity;
             // accelerate or decelerate to target speed
             if (Mathf.Abs(targetSpeed - currentHorizontalSpeed) > speedOffset)
             {
                 // creates curved result rather than a linear one giving a more organic speed change
-                status.NT_moveVelocity = Vector3.Lerp(currentVelocity,
+                tempVelocity = Vector3.Lerp(currentVelocity,
                     moveDirection * targetSpeed, deltaTime * acceleration);
             }
             else
             {
-                status.NT_moveVelocity = moveDirection * targetSpeed;
+                tempVelocity = moveDirection * targetSpeed;
             }
 
             if (inputDirection == Vector2.zero)
             {
                 targetSpeed = 0;
-                status.NT_moveVelocity = Vector3.Lerp(currentVelocity,
+                tempVelocity = Vector3.Lerp(currentVelocity,
                     moveDirection * targetSpeed, deltaTime * deceleration);
             }
-
+            tempVelocity.y = 0;
+            status.NT_moveVelocity = tempVelocity;
         }
 
-        private void HandleJumpInput(in NetworkButtons currentButtons, in NetworkButtons previousButtons)
+        private void HandleJumpInput(in NetworkButtons current, in NetworkButtons previous)
         {
             jumpImpulse = 0f;
-            //only on pressed 
-            if (KCC.IsGrounded && currentButtons.WasPressed(previousButtons, PlayerInputButtons.Jump))
+            if (KCC.IsGrounded && current.WasPressed(previous, PlayerInputButtons.Jump))//only on pressed 
             {
                 jumpImpulse = properties.JumpImpulse;
+                status.IsJump = true;
+                properties.VerticalimpulseVelocity = jumpImpulse / KCC.Rigidbody.mass;
             }
         }
 
@@ -231,20 +234,20 @@ namespace UnityDemo
             }
         }
 
-        [SerializeField]
-        Vector3 KCC_VelocityLocal;
+        //[SerializeField]
+        //Vector3 KCC_VelocityLocal;
 
-        [SerializeField]
-        float KCC_speed;
+        //[SerializeField]
+        //float KCC_speed;
 
-        [SerializeField]
-        bool isStrafe;
+        //[SerializeField]
+        //bool isStrafe;
 
-        [SerializeField]
-        bool isSprint;
+        //[SerializeField]
+        //bool isSprint;
 
-        [SerializeField]
-        float turningSpeed;
+        //[SerializeField]
+        //float turningSpeed;
 
         public override void Render()
         {
@@ -257,14 +260,16 @@ namespace UnityDemo
                 IsStrafe = status.NT_isStrafe,
                 TurningSpeed = status.NT_turningSpeed,
                 IsSprint = status.NT_isSprint,
+                IsJump = status.IsJump
+
             };
             _animationController.SetAnimationParams(in @params);
 
-            KCC_VelocityLocal = @params.LocalVelocity;
-            isStrafe = @params.IsStrafe;
-            turningSpeed = @params.TurningSpeed;
-            KCC_speed = KCC_VelocityLocal.magnitude;
-            isSprint = @params.IsSprint;
+            //KCC_VelocityLocal = @params.LocalVelocity;
+            //isStrafe = @params.IsStrafe;
+            //turningSpeed = @params.TurningSpeed;
+            //KCC_speed = KCC_VelocityLocal.magnitude;
+            //isSprint = @params.IsSprint;
         }
 
         public void OnFootstep(AnimationEvent animationEvent)
@@ -288,31 +293,6 @@ namespace UnityDemo
             _cameraController.onLookRotationEulerChanged -= OnLookRotationEulerChanged;
             status.onPlayerNameChanged -= OnPlayerNameChanged;
         }
-    }
-
-    [Serializable]
-    public class PlayerControllerProperties
-    {
-        [Header("Movement Setup")]
-        public float WalkSpeed = 2f;
-        public float RunSpeed = 5f;
-        public float SprintSpeed = 5f;
-        public float JumpImpulse = 10f;
-        public float UpGravity = -25f;
-        public float DownGravity = -40f;
-        public float VerticalSpeedThreshold = 10;
-
-        [Header("Movement Accelerations")]
-        public float GroundAcceleration = 55f;
-        public float GroundDeceleration = 25f;
-        public float AirAcceleration = 25f;
-        public float AirDeceleration = 1.3f;
-
-        [Header("Movement Rotation")]
-        [Tooltip("How fast the character turns to face movement direction")]
-        [Range(0.0f, 0.3f)]
-        public float RotationSmoothTime = 0.12f;
-        public float turnSpeedMultiply = 50f;
     }
 
 }
