@@ -10,6 +10,7 @@ namespace UnityDemo
         Attack=1,  // ¶}¤õ
         Sprint=2,  // ½Ä¨ë
         Strafe=3,  // °¼²¾
+        Drop = 4,   // ¥á±ó
     }
 
     [Serializable]

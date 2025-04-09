@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Drop",
+                    "type": "Button",
+                    "id": "0a4aa6ac-0817-4f74-a6ef-578da14c18c5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -417,7 +426,7 @@
                 {
                     "name": "",
                     "id": "d0b05e18-403b-4e13-83a6-bd8f61dfa64a",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/leftCtrl",
                     "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
@@ -428,7 +437,7 @@
                 {
                     "name": "",
                     "id": "2575b122-ddd0-43db-acb9-860db70e44ae",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
@@ -532,6 +541,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c534933f-8844-4e80-94b4-33676ba77353",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

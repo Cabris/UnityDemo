@@ -127,6 +127,15 @@ namespace UnityDemo
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a4aa6ac-0817-4f74-a6ef-578da14c18c5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -441,7 +450,7 @@ namespace UnityDemo
                 {
                     ""name"": """",
                     ""id"": ""d0b05e18-403b-4e13-83a6-bd8f61dfa64a"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
@@ -452,7 +461,7 @@ namespace UnityDemo
                 {
                     ""name"": """",
                     ""id"": ""2575b122-ddd0-43db-acb9-860db70e44ae"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
@@ -556,6 +565,17 @@ namespace UnityDemo
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c534933f-8844-4e80-94b4-33676ba77353"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1154,6 +1174,7 @@ namespace UnityDemo
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_Recentre = m_Player.FindAction("Recentre", throwIfNotFound: true);
             m_Player_Strafe = m_Player.FindAction("Strafe", throwIfNotFound: true);
+            m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1244,6 +1265,7 @@ namespace UnityDemo
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_Recentre;
         private readonly InputAction m_Player_Strafe;
+        private readonly InputAction m_Player_Drop;
         public struct PlayerActions
         {
             private @TP_StandardControls m_Wrapper;
@@ -1259,6 +1281,7 @@ namespace UnityDemo
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
             public InputAction @Recentre => m_Wrapper.m_Player_Recentre;
             public InputAction @Strafe => m_Wrapper.m_Player_Strafe;
+            public InputAction @Drop => m_Wrapper.m_Player_Drop;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1301,6 +1324,9 @@ namespace UnityDemo
                 @Strafe.started += instance.OnStrafe;
                 @Strafe.performed += instance.OnStrafe;
                 @Strafe.canceled += instance.OnStrafe;
+                @Drop.started += instance.OnDrop;
+                @Drop.performed += instance.OnDrop;
+                @Drop.canceled += instance.OnDrop;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1338,6 +1364,9 @@ namespace UnityDemo
                 @Strafe.started -= instance.OnStrafe;
                 @Strafe.performed -= instance.OnStrafe;
                 @Strafe.canceled -= instance.OnStrafe;
+                @Drop.started -= instance.OnDrop;
+                @Drop.performed -= instance.OnDrop;
+                @Drop.canceled -= instance.OnDrop;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1531,6 +1560,7 @@ namespace UnityDemo
             void OnSprint(InputAction.CallbackContext context);
             void OnRecentre(InputAction.CallbackContext context);
             void OnStrafe(InputAction.CallbackContext context);
+            void OnDrop(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
