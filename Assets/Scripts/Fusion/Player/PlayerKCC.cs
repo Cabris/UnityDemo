@@ -2,6 +2,7 @@ using Fusion;
 using UnityEngine;
 using Fusion.Addons.SimpleKCC;
 using static UnityDemo.AnimationController;
+using System.Collections.Generic;
 
 namespace UnityDemo
 {
@@ -22,6 +23,9 @@ namespace UnityDemo
         [SerializeField]
         private PlayerNetworkModel _model;
 
+        [SerializeField]
+        private Transform _aimTarget;
+
         private float jumpImpulse;
         private float _yawRotationSpeed = 0f;
         private float _pitchRotationSpeed = 0f;
@@ -29,7 +33,6 @@ namespace UnityDemo
         private bool _hasInputAuthority;
         private Vector3 SpawnedPosition = default;
         public TMPro.TextMeshProUGUI _playNameText;
-
 
         private void Start()
         {
@@ -48,22 +51,26 @@ namespace UnityDemo
 
         private void Initialize()
         {
-            Debug.Log("PlayerKCC Initialize");
+            Debug.Log($"PlayerKCC Initialize: NT_playerName: {_model.NT_playerName}," +
+            $" _hasInputAuthority:{_hasInputAuthority}, _hasStateAuthority: {_hasStateAuthority}");
             _model.OnInitialized -= Initialize;
 
-            _model.OnPlayerNameChanged += OnPlayerNameChanged;
-            _model.OnCurrentArmedStateChanged += OnCurrentArmedStateChanged;
+            _model._eventDispacher.OnPlayerNameChanged += OnPlayerNameChanged;
+            _model._eventDispacher.OnCurrentArmedTypeChanged += OnCurrentArmedStateChanged;
             _model.Movement.LookRotationEuler = KCC.GetLookRotation();
             _animationController.Initialize(properties);
             _equipmentController.Initialize(_model);
             _aimController.Initialize(_model);
-
+            _aimController.OnAimAtPositionChanged += OnAimAtPosition;
             _cameraController.onLookRotationEulerChanged += OnLookRotationEulerChanged;
+            OnPlayerNameChanged(_model.NT_playerName);
 
             if (_hasInputAuthority)//proxy in client
             {
                 _cameraController.SetupCameraControl();
                 _cameraController.SetCameraMode(CameraController.CameraMode.Follow);
+                GameManager.Instance.OnControlPlayerInitialize(_model);
+                _model.OnPlayerHasControl();
             }
         }
 
@@ -83,12 +90,18 @@ namespace UnityDemo
             if (!_model.IsInitialized)
                 return;
             ref PlayerMovementState mSate = ref _model.Movement;
+
             if (GetInput(out NetworkInputData newInput))
             {
                 NetworkButtons buttons = newInput.buttons;
-                if (_hasStateAuthority)
+                if (_hasStateAuthority)//排除掉client player,根據input計算出model值的部分
                 {
                     HandleMovementInput(ref mSate, newInput, _model.PreviousButtons, Runner.DeltaTime);
+                    if (_model.NT_CurrentArmedState == ArmedType.Aiming)
+                    {
+                        _model.AimAtPosition = newInput.aimAtPosition;
+                    }
+                    HandleWeaponAttack(newInput, _model.PreviousButtons);
                 }
                 HandleJumpInput(ref mSate, newInput.buttons, _model.PreviousButtons);
                 _model.PreviousButtons = buttons;
@@ -98,6 +111,13 @@ namespace UnityDemo
                 if (KCC.Transform.position.y < -100)//reset position if player fall off the map
                     KCC.SetPosition(SpawnedPosition);
                 _equipmentController.UpdateEquipmentState(Runner.DeltaTime);
+
+                if (_toBeEquipWeapon.Count > 0)
+                {
+                    var weapon = _toBeEquipWeapon.Dequeue();
+                    _equipmentController.EquipWeapon(weapon);
+                }
+
             }
 
             // It feels better when the player falls quicker
@@ -111,12 +131,39 @@ namespace UnityDemo
             }
         }
 
-        private void OnCurrentArmedStateChanged(ArmedType armedType)
+        private void HandleWeaponAttack(NetworkInputData newInput, in NetworkButtons previousButtons)
         {
-            if (_hasInputAuthority)
+            var curtentWeapon = _model.GetCurrentWeaponCached;
+            if (newInput.buttons.WasPressed(previousButtons, PlayerInputButtons.Aim))
             {
-                var mode = armedType == ArmedType.Aiming ? CameraController.CameraMode.Aiming : CameraController.CameraMode.Follow;
-                _cameraController.SetCameraMode(mode);
+                _model.IsAiming = !_model.IsAiming;
+            }
+
+            if (curtentWeapon==null || _model.NT_CurrentArmedState != ArmedType.Aiming)
+            {
+
+                return;
+            }
+
+            // Handle input for shooting
+            ShootRequestData data = default;
+            data.Requester = Object.Id;
+            data.AimAtPosition = _model.AimAtPosition;
+            _aimController.BuildShootRequest(ref data);
+            if (newInput.buttons.WasPressed(previousButtons, PlayerInputButtons.Attack))
+            {
+                data.FireType = FireInputType.Pressed;
+                curtentWeapon.HandleShootRequest(data);
+            }
+            if (newInput.buttons.WasReleased(previousButtons, PlayerInputButtons.Attack))
+            {
+                data.FireType = FireInputType.Released;
+                curtentWeapon.HandleShootRequest(data);
+            }
+            if (newInput.buttons.IsSet(PlayerInputButtons.Attack))
+            {
+                data.FireType = FireInputType.Hold;
+                curtentWeapon.HandleShootRequest(data);
             }
         }
 
@@ -148,7 +195,7 @@ namespace UnityDemo
             //Rotate player based on input
             // if there is a move input rotate player when the player is moving
             float turningSpeed = 0;
-            if (input.moveDelta != Vector2.zero || _model.CurrentArmedState == ArmedType.Aiming)//moving or aiming
+            if (input.moveDelta != Vector2.zero || _model.NT_CurrentArmedState == ArmedType.Aiming)//moving or aiming
             {
                 Vector3 lookRotationnEuler = Vector3.zero;
                 Vector3 currentLookRotationEuler = KCC.GetLookRotation();
@@ -170,16 +217,17 @@ namespace UnityDemo
                 float newPitch = Mathf.SmoothDampAngle(currentLookRotationEuler.x, lookRotationnEuler.x,
                     ref _pitchRotationSpeed, properties.RotationSmoothTime, Mathf.Infinity, deltaTime);
 
-                Vector3 rotationEuler = new Vector3(newPitch, newYaw, 0f);
-                if (mSate.LookRotationEuler != rotationEuler)
+                var rotationEuler = new Vector3(newPitch, newYaw, 0f);
+                var stateLookRotationEuler = new Vector3(mSate.LookRotationEuler.x, mSate.LookRotationEuler.y, 0);
+
+                if (stateLookRotationEuler != rotationEuler)
                 {
                     //calculate turningSpeed in range[-1,1] by NT_lookRotationEuler and rotationEuler
                     Vector3 newLookDirection = Quaternion.Euler(rotationEuler) * Vector3.forward;
-                    Vector3 oldLookDirection = Quaternion.Euler(mSate.LookRotationEuler) * Vector3.forward;
+                    Vector3 oldLookDirection = Quaternion.Euler(stateLookRotationEuler) * Vector3.forward;
 
                     float angleDifference = Vector3.SignedAngle(oldLookDirection, newLookDirection, Vector3.up);
                     turningSpeed = Mathf.Clamp(angleDifference * properties.turnSpeedMultiply / 180f, -1f, 1f);
-
                     mSate.LookRotationEuler = rotationEuler;
                     mSate.TurningSpeed = turningSpeed;
                 }
@@ -224,6 +272,11 @@ namespace UnityDemo
                     moveDirection * targetSpeed, deltaTime * deceleration);
             }
             tempVelocity.y = 0;
+            const float moveSpeedThreshold = 0.01f;
+            if (Mathf.Abs(tempVelocity.x) < moveSpeedThreshold)
+                tempVelocity.x = 0;
+            if (Mathf.Abs(tempVelocity.z) < moveSpeedThreshold)
+                tempVelocity.z = 0;
             mSate.MoveVelocity = tempVelocity;
         }
 
@@ -236,28 +289,6 @@ namespace UnityDemo
                 mSate.IsJump = true;
                 properties.VerticalimpulseVelocity = jumpImpulse / KCC.Rigidbody.mass;
             }
-        }
-
-        void LateUpdate()
-        {
-            //only update camera rotation if this player has input authority (the client who control this player)
-            if (_hasInputAuthority)
-            {
-                //local result for smooth camera rotation
-                _cameraController.UpdateCameraRotation(
-                    _playerInputCollector.LocalInputs.lookDelta,
-                    _playerInputCollector.IsCurrentDeviceMouse,
-                    Time.deltaTime);
-
-                _aimController.UpdateAimPosition();
-            }
-        }
-
-        private void OnLookRotationEulerChanged(Vector3 lookRotationEuler)
-        {
-            //apply to network input
-            _playerInputCollector.CachedInputData.lookRotationEuler = lookRotationEuler;
-            _playerInputCollector.CachedInputData.rotateTowardMovement = false;
         }
 
         public override void Render()
@@ -278,6 +309,41 @@ namespace UnityDemo
             _animationController.SetAnimationParams(in @params);
         }
 
+        private void LateUpdate()
+        {
+            //only update camera rotation if this player has input authority (the client who control this player)
+            if (_hasInputAuthority)
+            {
+                //local result for smooth camera rotation
+                var lookDelta = _playerInputCollector._lookDelta;
+                var isMouse = _playerInputCollector.IsCurrentDeviceMouse;
+                _cameraController.UpdateCameraRotation(lookDelta, isMouse, Time.deltaTime);
+            }
+        }
+
+        private void Update()
+        {
+            if (_hasInputAuthority)
+            {
+                _aimController.UpdateAimPosition(Time.deltaTime);
+            }
+
+            if (_model.NT_CurrentArmedState == ArmedType.Aiming)
+            {
+                _aimTarget.position = _model.AimAtPosition;
+            }
+        }
+
+        private void OnLookRotationEulerChanged(Vector2 lookRotationEuler)
+        {
+            _playerInputCollector.CachedInputData.lookRotationEuler = lookRotationEuler;
+        }
+
+        private void OnAimAtPosition(Vector3 targetPos)
+        {
+            _playerInputCollector.CachedInputData.aimAtPosition = targetPos;
+        }
+
         public void OnFootstep(AnimationEvent animationEvent)
         {
             _audioController.PlayFootstep(animationEvent, transform.position);
@@ -294,18 +360,31 @@ namespace UnityDemo
                 _playNameText.text = name;
         }
 
+        private void OnCurrentArmedStateChanged(ArmedType armedType)
+        {
+            if (_hasInputAuthority)
+            {
+                var mode = armedType == ArmedType.Aiming ? CameraController.CameraMode.Aiming : CameraController.CameraMode.Follow;
+                _cameraController.SetCameraMode(mode);
+            }
+        }
+
         private void OnDestroy()
         {
             _cameraController.onLookRotationEulerChanged -= OnLookRotationEulerChanged;
-            _model.OnPlayerNameChanged -= OnPlayerNameChanged;
-            _model.OnCurrentArmedStateChanged -= OnCurrentArmedStateChanged;
+            _aimController.OnAimAtPositionChanged -= OnAimAtPosition;
+            _model._eventDispacher.OnPlayerNameChanged -= OnPlayerNameChanged;
+            _model._eventDispacher.OnCurrentArmedTypeChanged -= OnCurrentArmedStateChanged;
         }
+
+        private Queue<IWeapon> _toBeEquipWeapon = new Queue<IWeapon>();
+
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_hasStateAuthority && other.CompareTag("Weapon") && other.TryGetComponent(out WeaponObjectBase weapon))
+            if (_hasStateAuthority && other.CompareTag("Weapon") && other.TryGetComponent(out IWeapon weapon))
             {
-                _equipmentController.EquipWeapon(ref weapon.NT_WeaponStructRef);
+                _toBeEquipWeapon.Enqueue(weapon);
             }
         }
     }

@@ -1,41 +1,30 @@
-using Fusion;
-using System;
 using UnityEngine;
-using UniVRM10;
 namespace UnityDemo
 {
     public class WeaponAimController : MonoBehaviour
     {
-        [SerializeField]
-        Transform _aimLookAt;
-        [SerializeField]
-        LayerMask _layerMask;
-        [SerializeField]
-        float _raycastDistance = 1000f;
+        [SerializeField] LayerMask _layerMask;
+        [SerializeField] float _raycastDistance = 1000f;
+        [SerializeField] float _aimSmoothFactor = 10f;
 
         [Header("Model")]
         [SerializeField] PlayerNetworkModel _model;
+
+        private Vector3 _currentHitPos = default;
+        public delegate void OnAimToPositionChangedEvent(Vector3 aimPosition);
+        public OnAimToPositionChangedEvent OnAimAtPositionChanged;
 
         internal void Initialize(PlayerNetworkModel model)
         {
             _model = model;
         }
 
-        public void UpdateAimPosition()
+        //called in Player::Update(), only when hasInputAuthority is true
+        public void UpdateAimPosition(float deltaTime)
         {
-            if (!_model || !_model.IsInitialized)
-            {
+            if (!TryGetCurrentWeapon(out IWeapon currentWeapon) || Camera.main == null)
                 return;
-            }
 
-            ref var equip = ref _model.Equipment;
-            var currentWeapon = _model.GetCurrentWeaponCached;
-
-            if (currentWeapon == null || _model.CurrentArmedState != ArmedType.Aiming)
-            {
-                //Debug.LogWarning("No current weapon assigned");
-                return;
-            }
             Vector3 rayStart = currentWeapon.RayCastFire.position;
             var screenRay = Camera.main.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
 
@@ -66,21 +55,45 @@ namespace UnityDemo
                 }
             }
 
+            Vector3 hitPos = default;
             if (nearestDistance < float.MaxValue)
             {
-                _aimLookAt.position = nearestHit.point;
-               // Debug.Log($"Hit: {nearestHit.transform.name}");
+                hitPos = nearestHit.point;
             }
             else
             {
-                _aimLookAt.position = screenRay.origin + screenRay.direction * _raycastDistance;
+                hitPos = screenRay.origin + screenRay.direction * _raycastDistance;
             }
-
-            // 傳送打中物件資訊給 Host（其實是自己）
-            // RPC_ApplyHit(hit.transform.GetComponent<NetworkObject>());
-
+            if (_currentHitPos == default)
+                OnAimAtPositionChanged?.Invoke(hitPos);
+            else
+            {
+                hitPos = Vector3.Lerp(_currentHitPos, hitPos, deltaTime * _aimSmoothFactor);
+                OnAimAtPositionChanged?.Invoke(hitPos);
+            }
+            _currentHitPos = hitPos;
         }
 
+        public void BuildShootRequest(ref ShootRequestData request)
+        {
+            request.LayerMaskValue = _layerMask;
+        }
+
+        private bool TryGetCurrentWeapon(out IWeapon weapon)
+        {
+            if (_model == null || !_model.IsInitialized)
+            {
+                weapon = null;
+                return false;
+            }
+            weapon = _model.GetCurrentWeaponCached;
+            if (weapon == null)
+            {
+                //Debug.LogWarning("No current weapon assigned");
+                return false;
+            }
+            return true;
+        }
 
     }
 }

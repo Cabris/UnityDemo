@@ -1,0 +1,47 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+#pragma kernel DrawPen
+#pragma kernel FadeOut
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> canvas;
+RWTexture2D<float4> layerBG;
+RWTexture2D<float4> layerPen;
+float4 colorValueBG;
+float4 colorValuePen;
+float resolution;
+float positionX;
+float positionY;
+float brushSize;
+float fadeOutAlpha;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // TODO: insert actual code here!
+
+    canvas[id.xy] = colorValueBG;
+}
+
+[numthreads(8, 8, 1)]
+void DrawPen(uint3 id : SV_DispatchThreadID)
+{
+    float x = id.x / resolution;
+    float y = id.y / resolution;
+    float value;
+
+    value = sqrt(((x - positionX / resolution) * (x - positionX / resolution) + (y - positionY / resolution) * (y - positionY / resolution))) * resolution;
+
+    if (value < brushSize)
+    {
+        canvas[id.xy] = colorValuePen;
+    }
+}
+
+[numthreads(8, 8, 1)]
+void FadeOut(uint3 id : SV_DispatchThreadID)
+{
+    float4 color = canvas[id.xy];
+    canvas[id.xy] = lerp(color, colorValueBG, fadeOutAlpha);
+}

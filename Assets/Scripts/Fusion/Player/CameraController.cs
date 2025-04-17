@@ -9,11 +9,14 @@ namespace UnityDemo
         {
             Follow,
             Aiming,
+            CharactorSelect,
+            Disable
         }
 
         [SerializeField] private Transform _cameraTarget;
         [SerializeField] private CinemachineVirtualCamera _followCamera;
         [SerializeField] private CinemachineVirtualCamera _aimingCamera;
+        [SerializeField] private CinemachineVirtualCamera _charSelCamera;
 
         [Header("Camera Settings")]
         public float TopClamp = 70.0f;
@@ -28,7 +31,7 @@ namespace UnityDemo
         private const float _threshold = 0.01f;
         private float _yaw, _pitch;
 
-        public delegate void OnLookRotationEulerChanged(Vector3 lookRotationEuler);
+        public delegate void OnLookRotationEulerChanged(Vector2 lookRotationEuler);
         public OnLookRotationEulerChanged onLookRotationEulerChanged;
 
         private void Awake()
@@ -44,6 +47,7 @@ namespace UnityDemo
             }
             _followCamera.enabled = false;
             _aimingCamera.enabled = false;
+            _charSelCamera.enabled = false;
         }
 
         public void SetupCameraControl()
@@ -64,20 +68,33 @@ namespace UnityDemo
 
         public void SetCameraMode(CameraMode mode)
         {
-            if (_followCamera == null || _aimingCamera == null)
+            if (_followCamera == null || _aimingCamera == null || _charSelCamera == null)
             {
                 SimpleLogger.Log($"Player Spawned Error: link VirtualCamera Error _playerVirtualCamera = null");
                 return;
             }
-            if (mode == CameraMode.Follow)
+            switch (mode)
             {
-                _followCamera.enabled = true;
-                _aimingCamera.enabled = false;
-            }
-            else
-            {
-                _followCamera.enabled = false;
-                _aimingCamera.enabled = true;
+                case CameraMode.Follow:
+                    _followCamera.enabled = true;
+                    _aimingCamera.enabled = false;
+                    _charSelCamera.enabled = false;
+                    break;
+                case CameraMode.Aiming:
+                    _followCamera.enabled = false;
+                    _aimingCamera.enabled = true;
+                    _charSelCamera.enabled = false;
+                    break;
+                case CameraMode.CharactorSelect:
+                    _followCamera.enabled = false;
+                    _aimingCamera.enabled = false;
+                    _charSelCamera.enabled = true;
+                    break;
+                case CameraMode.Disable:
+                    _followCamera.enabled = false;
+                    _aimingCamera.enabled = false;
+                    _charSelCamera.enabled = false;
+                    break;
             }
         }
 

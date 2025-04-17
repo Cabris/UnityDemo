@@ -18,9 +18,8 @@ namespace UnityDemo
         public bool cursorLocked = true;
         public bool cursorInputForLook = true;
 
-        [SerializeField]
-        private NetworkInputData _cachedInputData;
-
+        [SerializeField] private NetworkInputData _cachedInputData;
+        [SerializeField] public Vector2 _lookDelta = Vector2.zero;
         public ref NetworkInputData CachedInputData => ref _cachedInputData;
 
 #if ENABLE_INPUT_SYSTEM
@@ -41,7 +40,7 @@ namespace UnityDemo
         {
             if (cursorInputForLook)
             {
-                _cachedInputData.lookDelta = value.Get<Vector2>();
+                _lookDelta = value.Get<Vector2>();
             }
         }
 
@@ -55,12 +54,18 @@ namespace UnityDemo
             _cachedInputData.buttons.Set(PlayerInputButtons.Attack, value.isPressed);
         }
 
+        public void OnAim(InputValue value)
+        {
+            _cachedInputData.buttons.Set(PlayerInputButtons.Aim, value.isPressed);
+        }
+
         public void OnSprint(InputValue value)
         {
             _cachedInputData.buttons.Set(PlayerInputButtons.Sprint, value.isPressed);
         }
 
-        public void OnDrop(InputValue value) {
+        public void OnDrop(InputValue value)
+        {
             _cachedInputData.buttons.Set(PlayerInputButtons.Drop, value.isPressed);
 
         }

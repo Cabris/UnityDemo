@@ -1,6 +1,10 @@
+using Fusion;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.UIElements;
 namespace UnityDemo
 {
     public class EquipmentController : MonoBehaviour
@@ -10,42 +14,77 @@ namespace UnityDemo
         [SerializeField] Rig _AimPoseLayer;//Animation Rigging for aiming
         [SerializeField] Rig _HoldWeaponLayer;//Animation Rigging for holding weapon
         [SerializeField] Rig _HandPoseLayer;//Animation Rigging constraint hand to weapon
+        [SerializeField] MultiParentConstraint _ActiveWeaponPivotParent;
+
+        [Header("Properties")]
+        [SerializeField] WeaponEquipmentContext _context = new WeaponEquipmentContext();
+
+        [Header("Weapon Solts")]
+        [SerializeField] PlayerWeaponSolt _activeWeaponPivot, _disableWeapons;
 
         [Header("Hand Positions")]
         [SerializeField] Transform _HandIK_R;//Right hand IK position
         [SerializeField] Transform _HandIK_L;//Left hand IK position
 
-        [Header("Properties")]
-        [SerializeField] float _unequipThresholdSpeed = 3f;
-        [SerializeField] Transform _activeWeaponPivot, _disableWeapons;
-
         [Header("Model")]
         [SerializeField] private PlayerNetworkModel _model;
 
-        float _stateDuration = 0f;
+        private Dictionary<ArmedType, IArmedState> _armedStates;
+        private IArmedState _currentState;
+
+        [SerializeField]
+        ArmedType DEBUG_OVERRIDE_ArmedType = ArmedType.Undefined;
 
         public void Initialize(PlayerNetworkModel model)
         {
             _model = model;
-            _model.OnCurrentArmedStateChanged += OnCurrentArmedStateChanged;
-            TransitionToState(_model.CurrentArmedState);
-            UpdateRigLayers(_model.CurrentArmedState);
+            _model._eventDispacher.OnCurrentArmedTypeChanged += OnCurrentArmedTypeChanged;
+            _context.OnStateEnter += OnStateEnter;
+            _context.OnStateExit += OnStateExit;
+            _armedStates = new Dictionary<ArmedType, IArmedState>
+            {
+                { ArmedType.Unarmed, new UnarmedState() },
+                { ArmedType.Holding, new HoldingState() },
+                { ArmedType.Aiming, new AimingState() },
+            };
+
+            _currentState = _armedStates[_model.NT_CurrentArmedState];
+            _currentState.Enter(_context);
+            UpdateRigLayers(_model.NT_CurrentArmedState);
         }
 
         private void OnDestroy()
         {
-            _model.OnCurrentArmedStateChanged -= OnCurrentArmedStateChanged;
+            _context.OnStateEnter -= OnStateEnter;
+            _context.OnStateExit -= OnStateExit;
+            _model._eventDispacher.OnCurrentArmedTypeChanged -= OnCurrentArmedTypeChanged;
         }
 
-        private void OnCurrentArmedStateChanged(ArmedType armedType)
+        private void OnCurrentArmedTypeChanged(ArmedType armedType)
         {
-            UpdateRigLayers(_model.CurrentArmedState);
+            UpdateRigLayers(_model.NT_CurrentArmedState);
+        }
+
+        private void OnStateEnter(IArmedState state)
+        {
+            _model.NT_CurrentArmedState = state.Type;
+            ref PlayerMovementState mSate = ref _model.Movement;
+            mSate.IsStrafe = _model.NT_CurrentArmedState == ArmedType.Aiming ? true : false;
+            Debug.Log($"OnStateEnter: {_model.NT_CurrentArmedState}, IsStrafe: {mSate.IsStrafe}");
+        }
+
+        private void OnStateExit(IArmedState state)
+        {
+            if (state.Type == ArmedType.Aiming)
+            {
+
+            }
         }
 
         private void LateUpdate()
         {
-            var currentWeapon = _model.GetCurrentWeaponCached;
-            if (currentWeapon && _HandPoseLayer.weight > 0)
+            IWeapon currentWeapon = _model.GetCurrentWeaponCached;
+            if (currentWeapon != null && _HandPoseLayer.weight > 0)
             {
                 _HandIK_R.position = currentWeapon.HoldR.position;
                 _HandIK_R.rotation = currentWeapon.HoldR.rotation;
@@ -58,60 +97,41 @@ namespace UnityDemo
         //only for StateAuthority
         public void UpdateEquipmentState(float deltaTime)
         {
-            if (!_model || !_model.IsInitialized)
+            if (!_model || !_model.IsInitialized || _armedStates == null)
                 return;
 
-            var moveVelocity = _model.Movement.MoveVelocity;
+            var moveV = _model.Movement.MoveVelocity;
             var currentUseWeapon = _model.Equipment.CurrentUseWeapon;
-            bool isPressAttack = _model.PreviousButtons.IsSet(PlayerInputButtons.Attack);
-            float horizontalSpeedSqr = MathF.Pow(moveVelocity.x, 2) + MathF.Pow(moveVelocity.z, 2);
-            float _speedSqr = _unequipThresholdSpeed * _unequipThresholdSpeed;
 
-            if (horizontalSpeedSqr > _speedSqr || !currentUseWeapon.IsValid)
+            //_context._moveSpeed = Mathf.Sqrt(moveV.x * moveV.x + moveV.z * moveV.z);
+            _context._stateDuration += deltaTime;
+            _context._isAiming = _model.IsAiming;
+
+            if (DEBUG_OVERRIDE_ArmedType != ArmedType.Undefined)
             {
-                TransitionToState(ArmedType.Unequip);
+                if (_currentState.Type != DEBUG_OVERRIDE_ArmedType)
+                {
+                    _currentState = _armedStates[DEBUG_OVERRIDE_ArmedType];
+                    _currentState.Enter(_context);
+                }
                 return;
             }
 
-            switch (_model.CurrentArmedState)
+
+            if (_model.Movement.IsSprint || !currentUseWeapon.IsValid)
             {
-                case ArmedType.Unequip:
-                    {
-                        if (isPressAttack)//go to Holding state
-                        {
-                            TransitionToState(ArmedType.Holding);
-                        }
-                    }
-                    break;
-
-                case ArmedType.Holding:
-                    {
-                        float exitTimeUnhold = 2f;
-                        float exitTimeAiming = 0.5f;
-                        if (!isPressAttack && _stateDuration >= exitTimeUnhold)
-                            TransitionToState(ArmedType.Unequip);
-                        if (isPressAttack && _stateDuration >= exitTimeAiming)
-                            TransitionToState(ArmedType.Aiming);
-                    }
-                    break;
-
-                case ArmedType.Aiming:
-                    {
-                        float exitTimeUnAim = 2f;
-                        if (!isPressAttack && _stateDuration >= exitTimeUnAim)
-                            TransitionToState(ArmedType.Holding);
-                    }
-                    break;
+                _currentState = _armedStates[ArmedType.Unarmed];
+                _currentState.Enter(_context);
+                return;
             }
-            _stateDuration += deltaTime;
-        }
 
-        public void TransitionToState(ArmedType newState)
-        {
-            _stateDuration = 0;
-            _model.CurrentArmedState = newState;
-            ref PlayerMovementState mSate = ref _model.Movement;
-            mSate.IsStrafe = _model.CurrentArmedState == ArmedType.Aiming ? true : false;
+            var next = _currentState.TryGetNextState(_context);
+            if (next.HasValue && next.Value != _currentState.Type)
+            {
+                _currentState.Exit(_context);
+                _currentState = _armedStates[next.Value];
+                _currentState.Enter(_context);
+            }
         }
 
         private void UpdateRigLayers(ArmedType state, bool immediate = false)
@@ -124,9 +144,12 @@ namespace UnityDemo
 
             switch (state)
             {
-                case ArmedType.Unequip:
+                case ArmedType.Unarmed:
                     {
                         _AimPoseLayer.weight = _HoldWeaponLayer.weight = _HandPoseLayer.weight = 0f;
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(0, 0f);
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(1, 0f);
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(2, 0f);
                     }
                     break;
                 case ArmedType.Holding:
@@ -134,6 +157,9 @@ namespace UnityDemo
                         _HoldWeaponLayer.weight = 1f;
                         _AimPoseLayer.weight = 0f;
                         _HandPoseLayer.weight = 1f;
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(0, 0f);
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(1, 0f);
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(2, 0f);
                     }
                     break;
                 case ArmedType.Aiming:
@@ -141,15 +167,26 @@ namespace UnityDemo
                         _HoldWeaponLayer.weight = 0f;
                         _AimPoseLayer.weight = 1f;
                         _HandPoseLayer.weight = 1f;
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(0, 0f);
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(1, 0f);
+                        _ActiveWeaponPivotParent.data.sourceObjects.SetWeight(2, 1f);
                     }
                     break;
             }
+            var src = _ActiveWeaponPivotParent.data.sourceObjects;
+            for (int i = 0; i <= (int)ArmedType.Aiming; i++)
+            {
+                src.SetWeight(i, i == (int)state ? 1f : 0f);
+            }
+            _ActiveWeaponPivotParent.data.sourceObjects = src;
         }
 
         //only hasStateAuthority
-        public void EquipWeapon(ref NetworkWeaponStruct weaponStructRef)
+        public void EquipWeapon(IWeapon weaponObj)
         {
-            if (!_model || !_model.IsInitialized)
+            ref NetworkWeaponStruct weaponStructRef = ref weaponObj.WeaponStructRef;
+
+            if (!_model || !_model.IsInitialized || !weaponStructRef.IsValid)
             {
                 return;
             }
@@ -164,7 +201,7 @@ namespace UnityDemo
             bool hasSameWeaponName = equip.ContainsSameWeaponName(weaponStructRef);
             if (hasSameWeaponName)
             {
-                Debug.LogError($"WeaponName {weaponStructRef.Name} already exists in inventory");
+                Debug.Log($"WeaponName {weaponStructRef.Name} already exists in inventory");
                 return;
             }
 
@@ -176,11 +213,7 @@ namespace UnityDemo
             }
             equip.Weapons.Set(emptySolt, weaponStructRef);
             SwitchWeapon(weaponStructRef);
-
-            if (WeaponUtility.TryGetWeaponObjFromRef(_model.Runner, weaponStructRef, out WeaponObjectBase weapon))
-            {
-                weapon.AddToInventory();
-            }
+            weaponObj.AddToInventory();
         }
 
         //only hasStateAuthority
@@ -255,15 +288,12 @@ namespace UnityDemo
 
         private void OnWeaponSwitched(WeaponObjectBase weapon)
         {
-            weapon.transform.SetParent(_activeWeaponPivot, false);
-            weapon.transform.localPosition = Vector3.zero;
-            weapon.transform.localRotation = Quaternion.identity;
+            _activeWeaponPivot.AddWeapon(weapon);
         }
 
         private void OnWeaponUnswitched(WeaponObjectBase weapon)
         {
-            weapon.transform.SetParent(_disableWeapons, false);
-            weapon.transform.localScale = Vector3.zero;
+            _disableWeapons.AddWeapon(weapon);
         }
 
     }
