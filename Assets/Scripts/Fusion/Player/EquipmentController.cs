@@ -73,13 +73,7 @@ namespace UnityDemo
             Debug.Log($"OnStateEnter: {_model.NT_CurrentArmedState}, IsStrafe: {mSate.IsStrafe}");
         }
 
-        private void OnStateExit(IArmedState state)
-        {
-            if (state.Type == ArmedType.Aiming)
-            {
-
-            }
-        }
+        private void OnStateExit(IArmedState state) { }
 
         private void LateUpdate()
         {

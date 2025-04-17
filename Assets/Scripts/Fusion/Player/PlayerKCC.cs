@@ -23,8 +23,8 @@ namespace UnityDemo
         [SerializeField]
         private PlayerNetworkModel _model;
 
-        [SerializeField]
-        private Transform _aimTarget;
+        [SerializeField] private Transform _aimTarget;
+        [SerializeField] private TMPro.TextMeshProUGUI _playNameText;
 
         private float jumpImpulse;
         private float _yawRotationSpeed = 0f;
@@ -32,7 +32,7 @@ namespace UnityDemo
         private bool _hasStateAuthority;
         private bool _hasInputAuthority;
         private Vector3 SpawnedPosition = default;
-        public TMPro.TextMeshProUGUI _playNameText;
+        private Queue<IWeapon> _toBeEquipWeapon = new Queue<IWeapon>();
 
         private void Start()
         {
@@ -131,6 +131,7 @@ namespace UnityDemo
             }
         }
 
+        //TODO: move to PlayerWeaponHandler
         private void HandleWeaponAttack(NetworkInputData newInput, in NetworkButtons previousButtons)
         {
             var curtentWeapon = _model.GetCurrentWeaponCached;
@@ -139,7 +140,7 @@ namespace UnityDemo
                 _model.IsAiming = !_model.IsAiming;
             }
 
-            if (curtentWeapon==null || _model.NT_CurrentArmedState != ArmedType.Aiming)
+            if (curtentWeapon == null || _model.NT_CurrentArmedState != ArmedType.Aiming)
             {
 
                 return;
@@ -167,6 +168,7 @@ namespace UnityDemo
             }
         }
 
+        //TODO: move to PlayerMovementHandler
         //use input to set Networked properties
         private void HandleMovementInput(ref PlayerMovementState mSate, in NetworkInputData input,
         in NetworkButtons previousButtons, float deltaTime)
@@ -376,9 +378,6 @@ namespace UnityDemo
             _model._eventDispacher.OnPlayerNameChanged -= OnPlayerNameChanged;
             _model._eventDispacher.OnCurrentArmedTypeChanged -= OnCurrentArmedStateChanged;
         }
-
-        private Queue<IWeapon> _toBeEquipWeapon = new Queue<IWeapon>();
-
 
         private void OnTriggerEnter(Collider other)
         {

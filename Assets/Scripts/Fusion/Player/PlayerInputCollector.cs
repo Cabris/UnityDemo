@@ -124,7 +124,5 @@ namespace UnityDemo
         {
             Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
         }
-
-        public NetworkInputData LocalInputs { get => _cachedInputData; }
     }
 }

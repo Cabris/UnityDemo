@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 namespace UnityDemo
 {
+    //TODO: ISP
     public interface IWeapon
     {
         Transform SelfTransform { get; }
@@ -19,6 +20,8 @@ namespace UnityDemo
         void StopEffects();
     }
 
+
+    //TODO: SRP: move VFX/Network to another classes
     public class WeaponObjectBase : NetworkBehaviour, IWeapon
     {
         [SerializeField]
@@ -33,6 +36,8 @@ namespace UnityDemo
         [Networked] private ref NetworkWeaponStruct NT_WeaponStructRef => ref MakeRef<NetworkWeaponStruct>();
         [Networked, OnChangedRender(nameof(OnColliderEnableChangedRender))]
         NetworkBool NT_colliderEnabled { get; set; } // 用於控制碰撞器的啟用狀態
+
+        //TODO: DIP: use scriptable object to define weapon behavior
         [SerializeField] StrategyRifle strategyRifle;
         IWeaponStrategy _strategy;
 
@@ -52,6 +57,7 @@ namespace UnityDemo
             //未來_strategy可改成array來達成複數種行為
             //若request之後有擴充攻擊模式(射擊/進戰打擊/榴彈砲等基於同一把武器的不同行為)
             //可以透過切換不同的_strategy來達成
+            //改為透過工廠 or ScriptableObject來DI
             if (_strategy == null)
             {
                 _strategy = strategyRifle;

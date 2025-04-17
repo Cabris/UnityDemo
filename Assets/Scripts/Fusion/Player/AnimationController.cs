@@ -13,7 +13,6 @@ namespace UnityDemo
         private int _animIDIsGrounded;
         private int _animIDVerticalSpeed;
         private int _animIDTurningSpeed;
-        private int _animIDIsEquipWeapon;
         private int _animIDIsJump;
         private int _animIDIsStrafe;
         private bool isInitialized = false;
@@ -42,7 +41,6 @@ namespace UnityDemo
             _animIDIsGrounded = Animator.StringToHash("IsGrounded");
             _animIDVerticalSpeed = Animator.StringToHash("VerticalSpeed");
             _animIDTurningSpeed = Animator.StringToHash("TurningSpeed");
-            _animIDIsEquipWeapon = Animator.StringToHash("IsEquipWeapon");
             _animIDIsStrafe = Animator.StringToHash("IsStrafe");
             _animIDIsJump = Animator.StringToHash("IsJump");
 
@@ -51,7 +49,6 @@ namespace UnityDemo
                 Debug.LogError("Animator component not found on " + gameObject.name);
             }
         }
-
 
         private void SetForwardSpeed(float forwardSpeed)
         {
@@ -93,14 +90,6 @@ namespace UnityDemo
             }
         }
 
-        public void SetIsEquipWeapon(bool isEquipWeapon)
-        {
-            if (isInitialized)
-            {
-                _animator.SetBool(_animIDIsEquipWeapon, isEquipWeapon);
-            }
-        }
-
         private void SetIsStrafe(bool isStrafe)
         {
             if (isInitialized)
@@ -109,7 +98,7 @@ namespace UnityDemo
             }
         }
 
-        internal void SetIsJump(bool isJump)
+        private void SetIsJump(bool isJump)
         {
             if (!isInitialized)
                 return;
@@ -154,7 +143,7 @@ namespace UnityDemo
             //Debug.Log($"@params.LocalVelocity: {@params.LocalVelocity},  properties.RunSpeed: {properties.RunSpeed}, localVelocityNor: {localVelocityNor}");
         }
 
-        public float NormalizeVerticalSpeed(float v, float impulseVelocity, float gravityUp, float gravityDown)
+        private float NormalizeVerticalSpeed(float v, float impulseVelocity, float gravityUp, float gravityDown)
         {
             // 計算初始速度
             float vMax = impulseVelocity;
