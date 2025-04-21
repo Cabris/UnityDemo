@@ -17,6 +17,7 @@ namespace UnityDemo
         private int _animIDIsStrafe;
         private bool isInitialized = false;
         private readonly float sprintThreshold = 2f / 3f;
+
         public struct AnimationParams
         {
             public Vector3 LocalVelocity;

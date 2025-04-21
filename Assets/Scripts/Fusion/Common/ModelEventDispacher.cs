@@ -5,12 +5,19 @@ namespace UnityDemo
 {
     public class ModelEventDispacher
     {
+        public event Action OnInitialized;
         public event Action<string> OnPlayerNameChanged;
         public event Action<ArmedType> OnCurrentArmedTypeChanged;
         public event Action<bool> OnIsAimingChanged;
         public event Action<Vector3> OnAimAtPositionChanged;
         public event Action<float> OnPlayerHPChanged;
         public event Action<bool> OnPlayerControlChanged;
+
+        internal void Initialized(IPlayerNetworkModel model)
+        {
+            OnInitialized?.Invoke();
+        }
+
         internal void PlayerNameChanged(IPlayerNetworkModel model, string playerName)
         {
             OnPlayerNameChanged?.Invoke(playerName);

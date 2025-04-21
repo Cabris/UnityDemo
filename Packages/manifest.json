@@ -1,5 +1,6 @@
 {
   "dependencies": {
+	"com.annulusgames.enhanced-on-screen-stick": "https://github.com/Cabris/EnhancedOnScreenStick.git?path=Assets/EnhancedOnScreenStick",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.deltation.toon-shader": "https://github.com/Delt06/urp-toon-shader.git?path=Packages/com.deltation.toon-shader",
     "com.naelstrof.jigglephysics": "https://github.com/naelstrof/UnityJigglePhysics.git#upm",

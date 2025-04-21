@@ -529,6 +529,77 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2633775496391181403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2355669335916419875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6493794390789227}
+  - component: {fileID: 4906519815061789928}
+  - component: {fileID: 1553791591296700751}
+  m_Layer: 3
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6493794390789227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2355669335916419875}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6447072045145944512}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4906519815061789928
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2355669335916419875}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1553791591296700751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2355669335916419875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b59b74d2ade63a74fb614855447c4f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagePart:
+    Name: Body
+    DamageFactor: 1
 --- !u!1 &2428993562605794923
 GameObject:
   m_ObjectHideFlags: 0
@@ -3716,6 +3787,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2975894925254209874}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6493794390789227}
     - targetCorrespondingSourceObject: {fileID: 8879528566716807029, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7100600661747097809}
@@ -3723,9 +3797,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7510915954324251353}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 659170790050987838}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3992268172649894895}
@@ -3752,7 +3823,7 @@ PrefabInstance:
       addedObject: {fileID: 8380727590563854036}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4928525821581953186}
+      addedObject: {fileID: 6812234873927492389}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c78a117d66fd064095becfa9acf661c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7186845120006189485}
@@ -4030,43 +4101,12 @@ MonoBehaviour:
   NestedObjects:
   - {fileID: 1601404989365327836}
   NetworkedBehaviours:
-  - {fileID: 3992268172649894895}
   - {fileID: 2259182487297559836}
   - {fileID: 1593304794965679906}
   - {fileID: 4745555394090263434}
   - {fileID: 7836695791682741113}
   - {fileID: 1991686072922036866}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &659170790050987838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5923158686464093050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &3992268172649894895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4082,13 +4122,8 @@ MonoBehaviour:
   analogMovement: 0
   cursorLocked: 0
   cursorInputForLook: 1
-  _cachedInputData:
-    moveDelta: {x: 0, y: 0}
-    lookRotationEuler: {x: 0, y: 0}
-    aimAtPosition: {x: 0, y: 0, z: 0}
-    analogMovement:
-      _value: 0
   _lookDelta: {x: 0, y: 0}
+  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!54 &5255450627804694661
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4135,10 +4170,10 @@ MonoBehaviour:
     Radius: 0.35
     Height: 1.8
     Extent: 0.035
-    ColliderLayer: 3
+    ColliderLayer: 2
     CollisionLayerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 9
     ProxyInterpolationMode: 0
     MaxPenetrationSteps: 8
     CCDRadiusMultiplier: 0.75
@@ -4171,7 +4206,7 @@ MonoBehaviour:
   _audioController: {fileID: 8045308077243105946}
   _playerInputCollector: {fileID: 3992268172649894895}
   _equipmentController: {fileID: 8380727590563854036}
-  _aimController: {fileID: 4928525821581953186}
+  _damageController: {fileID: 6812234873927492389}
   properties:
     WalkSpeed: 2
     RunSpeed: 5
@@ -4186,6 +4221,11 @@ MonoBehaviour:
     AirDeceleration: 1.3
     RotationSmoothTime: 0.219
     turnSpeedMultiply: 50
+    _layerMask:
+      serializedVersion: 2
+      m_Bits: 9
+    _raycastDistance: 1000
+    _aimSmoothFactor: 30
   _model: {fileID: 4745555394090263434}
   _aimTarget: {fileID: 5598554564098228405}
   _playNameText: {fileID: 2643457551014229730}
@@ -4201,34 +4241,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cabf9817d90dde24d9313563f77f0862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Movement:
-    MoveVelocity: {x: 0, y: 0, z: 0}
-    LookRotationEuler: {x: 0, y: 0}
-    TurningSpeed: 0
-    MotionSpeedMultiply: 0
-    IsStrafe:
-      _value: 0
-    IsSprint:
-      _value: 0
-    IsJump:
-      _value: 0
-  _Equipment:
-    CurrentUseWeapon:
-      WeaponId:
-        Raw: 0
-      Name:
-        _length: 0
-        _data:
-          Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    _Weapons:
-      Data: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  _AimAtPosition: {x: 0, y: 0, z: 0}
-  _IsAiming:
+  _NT_AimAtPosition: {x: 0, y: 0, z: 0}
+  _NT_IsAiming:
     _value: 0
   _NT_CurrentArmedState: 0
   _NT_playerName: 
-  _NT_playerHP: 10
-  _NT_playerHPMax: 0
+  _NT_playerHP: 100
+  _NT_playerHPMax: 100
 --- !u!114 &8045308077243105946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4292,7 +4311,7 @@ MonoBehaviour:
   _HandIK_L: {fileID: 3388331851765837846}
   _model: {fileID: 4745555394090263434}
   DEBUG_OVERRIDE_ArmedType: -1
---- !u!114 &4928525821581953186
+--- !u!114 &6812234873927492389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4301,15 +4320,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5923158686464093050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9d25b893b51824eb3a0660beeaf7a2, type: 3}
+  m_Script: {fileID: 11500000, guid: f1c73b727318c494696fa773841c8b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  _raycastDistance: 1000
-  _aimSmoothFactor: 30
-  _model: {fileID: 4745555394090263434}
 --- !u!114 &7186845120006189485
 MonoBehaviour:
   m_ObjectHideFlags: 0

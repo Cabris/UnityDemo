@@ -819,6 +819,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
+    Android: FUSION_WEAVER;FUSION2;UNITY_PIPELINE_URP;FUSION_LOGLEVEL_INFO
     Standalone: FUSION_WEAVER;FUSION2;FUSION_LOGLEVEL_INFO;UNITY_PIPELINE_URP
   additionalCompilerArguments: {}
   platformArchitecture: {}

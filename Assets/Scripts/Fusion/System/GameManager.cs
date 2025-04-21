@@ -6,22 +6,33 @@ using Fusion;
 using Fusion.Sockets;
 using System.Text;
 using Cysharp.Threading.Tasks;
+using static Unity.Collections.Unicode;
 
 namespace UnityDemo
 {
-    public class GameManager : MonoBehaviour, INetworkRunnerCallbacks
+    public interface IGameManager
+    {
+        void OnControlPlayerInitialize(IPlayerNetworkModel model);
+        int GetPlayerChararctorID();
+        string GetPlayerName();
+        void OnOnPlayerReadyToSpawner(PlayerSpawnData data);
+        NetworkRunner NetworkRunner { get; }
+    }
+
+    public class GameManager : MonoBehaviour, INetworkRunnerCallbacks, IGameManager
     {
         [SerializeField] PlayerCharactorDefines _characterDefines;
         [SerializeField] Animator _menuAC;
         [SerializeField] CharactorSelecter _charactorSelecter;
         [SerializeField] PlayerHUDController _playerHUD;
+        [SerializeField] PlayerSpawner _playerSpawnerPrefab;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
         public NetworkRunner _runner;
         private INetworkSceneManager _networkSceneManager;
         private int _animIDisConnected;
         private const int _playSceneIndex = 2; // play scene index in build settings
         static GameManager _instance;
-        public static GameManager Instance
+        public static IGameManager Instance
         {
             get
             {
@@ -30,6 +41,8 @@ namespace UnityDemo
                 return _instance;
             }
         }
+
+        public NetworkRunner NetworkRunner => _runner;
 
         private void Awake()
         {
@@ -94,7 +107,6 @@ namespace UnityDemo
             ShutdownGame();
         }
 
-
         private async void ShutdownGame()
         {
             SceneRef scenePlay = SceneRef.FromIndex(_playSceneIndex);
@@ -115,22 +127,59 @@ namespace UnityDemo
             // SimpleLogger.Log($"OnInput: input = {input}");
         }
 
+        public int GetPlayerChararctorID()
+        {
+            if (_charactorSelecter == null)
+            {
+                return -1;
+            }
+            return _charactorSelecter._selectedIndex;
+        }
+
+        public string GetPlayerName()
+        {
+            return "";
+        }
+
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef playerRef)
         {
             DebugStrAppendLine($"OnPlayerJoined: runner.IsServer = {runner.IsServer} ,player = {playerRef.PlayerId}");
 
             if (runner.IsServer)
             {
-                // Create a unique position for the player
-                var playerPrefab = _characterDefines._playerCharactors[_charactorSelecter._selectedIndex].prefab;
                 Vector3 spawnPosition = new Vector3((playerRef.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
-                NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, playerRef);
-                networkPlayerObject.GetComponent<PlayerNetworkModel>().NT_playerName = "Player_" + playerRef.PlayerId.ToString();
-                // Keep track of the player avatars for easy access
-                _spawnedCharacters.Add(playerRef, networkPlayerObject);
-
-                //TODO: do not spawn player character yet, let player choose character then spawn
+                var spawner = runner.Spawn(_playerSpawnerPrefab, spawnPosition, Quaternion.identity, playerRef);
             }
+        }
+
+        public void OnOnPlayerReadyToSpawner(PlayerSpawnData data)
+        {
+            Debug.Log($"OnPlayerSpawnerSpawned: PlayerId = {data.PlayerRef.PlayerId}");
+
+            if (_runner.IsServer)
+            {
+                SpawnPlayer(_runner, data);
+                var spawner = _runner.FindObject(data.SpawnerID);
+                if (spawner == null)
+                {
+                    Debug.LogError($"Can not find Object with ID {data.SpawnerID}");
+                    return;
+                }
+                _runner.Despawn(spawner);
+            }
+        }
+
+        private void SpawnPlayer(NetworkRunner runner, PlayerSpawnData data)
+        {
+            Debug.Log($"SpawnPlayer: PlayerId = {data.PlayerRef.PlayerId}");
+            var playerRef = data.PlayerRef;
+            // Create a unique position for the player
+            var playerPrefab = _characterDefines._playerCharactors[data.CharactorID].prefab;
+            Vector3 spawnPosition = data.SpawnPosition;
+            NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, playerRef);
+            networkPlayerObject.GetComponent<PlayerNetworkModel>().NT_playerName = data.Name.Value;
+            // Keep track of the player avatars for easy access
+            _spawnedCharacters.Add(playerRef, networkPlayerObject);
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -178,7 +227,7 @@ namespace UnityDemo
             SimpleLogger.Log(v);
         }
 
-        internal void OnControlPlayerInitialize(IPlayerNetworkModel model)
+        public void OnControlPlayerInitialize(IPlayerNetworkModel model)
         {
             if (_playerHUD != null)
                 _playerHUD.SetModel(model);

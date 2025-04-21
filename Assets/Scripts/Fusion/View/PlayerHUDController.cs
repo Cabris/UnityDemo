@@ -7,6 +7,7 @@ namespace UnityDemo
     {
         [SerializeField] Image _crosshair;
         [SerializeField] Slider _healthBar;
+        [SerializeField] CanvasGroup _controlsCG;
         IPlayerNetworkModel _model;
 
         //dependency injection
@@ -29,6 +30,7 @@ namespace UnityDemo
                 dispacher.OnIsAimingChanged += OnIsAimingChanged;
                 dispacher.OnPlayerControlChanged += OnPlayerControlChanged;
             }
+            OnPlayerHPChanged(_model.PlayerConditions.GetPlayerHPPercent());
         }
 
         private void Start()
@@ -63,6 +65,13 @@ namespace UnityDemo
             if (_healthBar != null)
             {
                 _healthBar.GetComponent<CanvasGroup>().alpha = hasControl ? 1 : 0; // Set alpha to 1 if has control, otherwise 0
+            }
+
+            if (_controlsCG != null)
+            {
+                _controlsCG.alpha = hasControl ? 1 : 0; // Set alpha to 1 if has control, otherwise 0
+                _controlsCG.interactable = hasControl;
+                _controlsCG.blocksRaycasts = hasControl;
             }
         }
 

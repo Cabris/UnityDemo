@@ -14,7 +14,6 @@ namespace UnityDemo
         Attack = 6,  // 開火
     }
 
-    [Serializable]
     public struct NetworkInputData : INetworkInput
     {
         public Vector2 moveDelta;
@@ -32,7 +31,6 @@ namespace UnityDemo
         }
     }
 
-    [Serializable]
     public struct PlayerMovementState : INetworkStruct
     {
         public Vector3 MoveVelocity;
@@ -45,7 +43,6 @@ namespace UnityDemo
         public NetworkBool IsJump;
     }
 
-    [Serializable]
     public struct NetworkWeaponStruct : INetworkStruct
     {
         public NetworkId WeaponId; // 來自 WeaponObjectBase 的 NetworkObjectId
@@ -77,7 +74,6 @@ namespace UnityDemo
         }
     }
 
-    [Serializable]
     public struct PlayerEquipmentNetworkState : INetworkStruct
     {
         const int MAX_WEAPON_COUNT = 5;
@@ -147,5 +143,14 @@ namespace UnityDemo
         public int LayerMaskValue;
         public NetworkId Requester;//who make the request
         public Vector3 AimAtPosition;
+    }
+
+    public struct PlayerSpawnData : INetworkStruct
+    {
+        public NetworkString<_16> Name;
+        public int CharactorID;
+        public Vector3 SpawnPosition;
+        public PlayerRef PlayerRef;
+        public NetworkId SpawnerID;
     }
 }

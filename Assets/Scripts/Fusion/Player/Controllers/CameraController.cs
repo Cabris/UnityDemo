@@ -31,8 +31,8 @@ namespace UnityDemo
         private const float _threshold = 0.01f;
         private float _yaw, _pitch;
 
-        public delegate void OnLookRotationEulerChanged(Vector2 lookRotationEuler);
-        public OnLookRotationEulerChanged onLookRotationEulerChanged;
+        public delegate void EventOnLookRotationEulerChanged(Vector2 lookRotationEuler);
+        public EventOnLookRotationEulerChanged OnLookRotationEulerChanged;
 
         private void Awake()
         {
@@ -113,7 +113,7 @@ namespace UnityDemo
 
             if (_cameraTarget != null)
                 _cameraTarget.rotation = rotation;
-            onLookRotationEulerChanged?.Invoke(rotation.eulerAngles);
+            OnLookRotationEulerChanged?.Invoke(rotation.eulerAngles);
         }
 
     }

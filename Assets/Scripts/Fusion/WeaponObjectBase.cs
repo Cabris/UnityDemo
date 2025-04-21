@@ -255,19 +255,4 @@ namespace UnityDemo
         void PlayFireEffects();
         void StopFireEffects();
     }
-
-    public struct DamageData
-    {
-        public int DamageAmount;
-        public NetworkId Source;
-        public Vector3 HitPosition;
-        internal Vector3 HitNormal;
-    }
-
-    public interface IDamageable
-    {
-        void ApplyDamage(DamageData damageData);
-    }
-
-
 }

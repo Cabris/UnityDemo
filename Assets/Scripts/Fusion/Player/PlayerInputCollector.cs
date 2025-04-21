@@ -1,40 +1,39 @@
 using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 namespace UnityDemo
 {
-#if ENABLE_INPUT_SYSTEM
-    [RequireComponent(typeof(PlayerInput))]
-#endif
-    //[RequireComponent(typeof(StarterAssetsInputs))]
-    public sealed class PlayerInputCollector : NetworkBehaviour
+    public sealed class PlayerInputCollector : MonoBehaviour
     {
-        //[SerializeField]
-        //private StarterAssetsInputs _localInputs;
+
         [Header("Movement Settings")]
         public bool analogMovement;
 
         [Header("Mouse Cursor Settings")]
         public bool cursorLocked = true;
         public bool cursorInputForLook = true;
-
+        [Header("InputDatas")]
         [SerializeField] private NetworkInputData _cachedInputData;
         [SerializeField] public Vector2 _lookDelta = Vector2.zero;
+        [Header("InputDatas")]
+        [SerializeField]
+        private InputActionAsset inputActions;
+        private NetworkEvents _networkEvents;
         public ref NetworkInputData CachedInputData => ref _cachedInputData;
 
-#if ENABLE_INPUT_SYSTEM
         private PlayerInput _playerInput;
 
         public void OnMove(InputValue value)
         {
             _cachedInputData.moveDelta = value.Get<Vector2>();
+            //Debug.Log($"OnMove: {_cachedInputData.moveDelta}");
         }
 
         public void OnStrafe(InputValue value)
         {
             _cachedInputData.buttons.Set(PlayerInputButtons.Strafe, value.isPressed);
         }
-
 
         public void OnLook(InputValue value)
         {
@@ -69,33 +68,34 @@ namespace UnityDemo
             _cachedInputData.buttons.Set(PlayerInputButtons.Drop, value.isPressed);
 
         }
-#endif
-        private void Awake()
+
+        public void Initialize(bool hasInputAuthority, NetworkEvents networkEvents)
         {
-            if (!TryGetComponent(out _playerInput))
+            if (hasInputAuthority)
             {
-                SimpleLogger.Log("PlayerInputCollector Error: _playerInput = null");
+                _playerInput = gameObject.AddComponent<PlayerInput>();
+                _playerInput.enabled = true;
+                _playerInput.actions = inputActions;
+                //_playerInput.neverAutoSwitchControlSchemes = true;
+                //_playerInput.defaultControlScheme = "Any";
+                _playerInput.defaultActionMap = "Player";
+                _playerInput.notificationBehavior = PlayerNotifications.SendMessages;
+
+                // Register to Fusion input poll callback
+                _networkEvents = networkEvents;
+                _networkEvents.OnInput.AddListener(OnInput);
+            }
+            else
+            {
+                return;
             }
         }
 
-        public override void Spawned()
+        private void OnDestroy()
         {
-            if (HasInputAuthority == false)
+            if (_networkEvents == null)
                 return;
-            // Register to Fusion input poll callback
-            var networkEvents = Runner.GetComponent<NetworkEvents>();
-            networkEvents.OnInput.AddListener(OnInput);
-        }
-
-        public override void Despawned(NetworkRunner runner, bool hasState)
-        {
-            if (runner == null)
-                return;
-            var networkEvents = runner.GetComponent<NetworkEvents>();
-            if (networkEvents != null)
-            {
-                networkEvents.OnInput.RemoveListener(OnInput);
-            }
+            _networkEvents.OnInput.RemoveListener(OnInput);
         }
 
         private void OnInput(NetworkRunner runner, NetworkInput input)
